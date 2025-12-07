@@ -233,7 +233,7 @@ const Translations = {
         legalText:"<ul><li><strong>1. Yaş Sınırı:</strong> 18+ yaş gereklidir.</li><li><strong>2. Sorumluluk Reddi:</strong> Yapay zeka simülasyonudur.</li><li><strong>3. Etik:</strong> Saygılı dil kullanınız.</li><li><strong>4. Gizlilik:</strong> Veriler cihazınızda saklanır.</li><li><strong>5. Rıza:</strong> Kullanarak şartları kabul edersiniz.</li></ul>",
         legalBtn:"Kabul Ediyorum", clearMsg:"Sohbet geçmişi silinsin mi?", intro:"Merhaba, seni dinliyorum.",
         profileTitle:"Seni Tanıyalım", profileSubtitle:"Yargısız, güvenli dert ortağın.", startBtn:"Başla",
-        gender:["Cinsiyet?", "Kadın", "Erkek", "Belirtme"], age:["Yaş", "18-24", "25-34", "35-44", "45-54", "55-64", "65-74", "75-84", "85+"], job:["Ne ile meşgulsün?", "Öğrenci", "Çalışan", "Ev Hanımı", "İşsiz", "Emekli"], relation:["İlişki durumun nedir?", "Bekar", "İlişkisi Var", "Evli", "Karmaşık"], mood:["Ruh halin nasıl?", "Mutlu", "Üzgün", "Kızgın", "Yorgun", "Nötr"]
+        gender:["Cinsiyet?", "Kadın", "Erkek", "Belirtme"], age:["Yaş?", "18-24", "25-34", "35+"], job:["Meslek?", "Öğrenci", "Çalışan", "Ev Hanımı", "İşsiz", "Emekli"], relation:["İlişki?", "Bekar", "İlişkisi Var", "Evli", "Karmaşık"], mood:["Mod?", "Mutlu", "Üzgün", "Kızgın", "Yorgun", "Nötr"]
     },
     en: {
         appTitle:"Soul Confidant", appSubtitle:"Good to talk", labelAdvice:"Vent", labelGossip:"Gossip", placeholder:"Type here...",
@@ -241,21 +241,28 @@ const Translations = {
         legalText:"<ul><li><strong>1. Age Limit:</strong> 18+ required.</li><li><strong>2. Disclaimer:</strong> AI simulation.</li><li><strong>3. Ethics:</strong> Respectful language only.</li><li><strong>4. Privacy:</strong> Local data storage.</li><li><strong>5. Consent:</strong> By using, you accept terms.</li></ul>",
         legalBtn:"I Accept", clearMsg:"Clear history?", intro:"Hello, I'm listening.",
         profileTitle:"Let's Know You", profileSubtitle:"Safe space.", startBtn:"Start",
-        gender:["Gender?", "Female", "Male", "N/A"], age:["Age?", "18-24", "25-34", "35-44", "45-54", "55-64", "65-74", "75-84", "85+"], job:["Job?", "Student", "Worker", "Homemaker", "Unemployed", "Retired"], relation:["Status?", "Single", "Taken", "Married", "Complicated"], mood:["Mood?", "Happy", "Sad", "Angry", "Tired", "Neutral"]
+        gender:["Gender?", "Female", "Male", "N/A"], age:["Age?", "18-24", "25-34", "35+"], job:["Job?", "Student", "Worker", "Homemaker", "Unemployed", "Retired"], relation:["Status?", "Single", "Taken", "Married", "Complicated"], mood:["Mood?", "Happy", "Sad", "Angry", "Tired", "Neutral"]
     },
     de: {
         appTitle:"Seelenverwandter", appSubtitle:"Es tut gut zu reden", labelAdvice:"Reden", labelGossip:"Klatsch", placeholder:"Schreiben...",
         legalTitle:"Rechtlicher Hinweis", legalText:"<p>1. 18+.</p>", legalBtn:"Akzeptieren", clearMsg:"Löschen?", intro:"Hallo.",
         profileTitle:"Dich Kennenlernen", profileSubtitle:"Sicherer Raum.", startBtn:"Starten",
-        gender:["Geschlecht?", "Weiblich", "Männlich"], age:["Alter?", "18-24", "25-34", "35-44", "45-54", "55-64", "65-74", "75-84", "85+"], job:["Beruf?", "Student", "Arbeit", "Hausfrau"], relation:["Status?", "Single"], mood:["Laune?", "Gut", "Schlecht"]
+        gender:["Geschlecht?", "Weiblich", "Männlich"], age:["Alter?", "18-24", "25+"], job:["Beruf?", "Student", "Arbeit", "Hausfrau"], relation:["Status?", "Single"], mood:["Laune?", "Gut", "Schlecht"]
     },
     fr: {
         appTitle:"Confident", appSubtitle:"Parler fait du bien", labelAdvice:"Confier", labelGossip:"Potins", placeholder:"Écrivez...",
         legalTitle:"Avis Légal", legalText:"<p>1. 18+.</p>", legalBtn:"Accepter", clearMsg:"Effacer?", intro:"Bonjour.",
         profileTitle:"Faisons Connaissance", profileSubtitle:"Espace sûr.", startBtn:"Commencer",
-        gender:["Genre?", "Femme", "Homme"], age:["Âge?", "18-24", "25-34", "35-44", "45-54", "55-64", "65-74", "75-84", "85+"], job:["Emploi?", "Étudiant", "Travail", "Au foyer"], relation:["Statut?", "Célibataire"], mood:["Humeur?", "Bien", "Mal"]
+        gender:["Genre?", "Femme", "Homme"], age:["Âge?", "18-24", "25+"], job:["Emploi?", "Étudiant", "Travail", "Au foyer"], relation:["Statut?", "Célibataire"], mood:["Humeur?", "Bien", "Mal"]
     },
-    
+    es: { appTitle:"Confidente", appSubtitle:"Hablar te hará bien", labelAdvice:"Desahogarse", labelGossip:"Chisme", placeholder:"Escribe...", legalTitle:"Aviso Legal", legalText:"<p>1. 18+.</p>", legalBtn:"Aceptar", clearMsg:"¿Borrar?", intro:"Hola.", profileTitle:"Conozcámonos", profileSubtitle:"Espacio seguro.", startBtn:"Iniciar", gender:["Género?", "Mujer", "Hombre"], age:["Edad?", "18-24", "25+"], job:["Ocupación?", "Estudiante", "Trabajo", "Ama de casa"], relation:["Estado?", "Soltero"], mood:["Ánimo?", "Bien", "Mal"] },
+    ru: { appTitle:"Душевный Друг", appSubtitle:"Разговор поможет", labelAdvice:"Выговориться", labelGossip:"Сплетни", placeholder:"Напишите...", legalTitle:"Уведомление", legalText:"<p>1. 18+.</p>", legalBtn:"Принять", clearMsg:"Очистить?", intro:"Здравствуйте.", profileTitle:"Профиль", profileSubtitle:"Безопасно.", startBtn:"Начать", gender:["Пол?", "Женский", "Мужской"], age:["Возраст?", "18-24", "25+"], job:["Работа?", "Студент", "Работаю", "Домохозяйка"], relation:["Статус?", "Свободен"], mood:["Настроение?", "Хорошо", "Плохо"] },
+    ja: { appTitle:"心の友", appSubtitle:"話すことで楽に", labelAdvice:"相談", labelGossip:"噂話", placeholder:"入力...", legalTitle:"免責事項", legalText:"<p>1. 18歳以上。</p>", legalBtn:"同意", clearMsg:"履歴削除？", intro:"こんにちは。", profileTitle:"プロフィール", profileSubtitle:"安全な場所。", startBtn:"開始", gender:["性別?", "女性", "男性"], age:["年齢?", "18-24", "25+"], job:["職業?", "学生", "会社員", "主婦"], relation:["ステータス?", "独身"], mood:["気分?", "良い", "悪い"] },
+    pt: { appTitle:"Confidente", appSubtitle:"Falar faz bem", labelAdvice:"Desabafar", labelGossip:"Fofoca", placeholder:"Digite...", legalTitle:"Aviso", legalText:"<p>1. 18+.</p>", legalBtn:"Aceito", clearMsg:"Limpar?", intro:"Olá.", profileTitle:"Perfil", profileSubtitle:"Seguro.", startBtn:"Iniciar", gender:["Gênero?", "Feminino", "Masculino"], age:["Idade?", "18-24", "25+"], job:["Ocupação?", "Estudante", "Trabalho", "Do lar"], relation:["Status?", "Solteiro"], mood:["Humor?", "Bem", "Mal"] },
+    ar: { appTitle:"رفيق الروح", appSubtitle:"تحدث", labelAdvice:"فضفضة", labelGossip:"دردشة", placeholder:"اكتب...", legalTitle:"تنبيه", legalText:"<p>1. 18+.</p>", legalBtn:"موافق", clearMsg:"مسح؟", intro:"مرحباً.", profileTitle:"الملف", profileSubtitle:"آمن.", startBtn:"ابدأ", gender:["الجنس؟", "أنثى", "ذكر"], age:["العمر؟", "18-24", "25+"], job:["العمل؟", "طالب", "عمل", "ربة منزل"], relation:["الحالة؟", "أعزب"], mood:["المزاج؟", "جيد", "سيء"] },
+    zh: { appTitle:"知己", appSubtitle:"倾诉", labelAdvice:"倾诉", labelGossip:"八卦", placeholder:"输入...", legalTitle:"声明", legalText:"<p>1. 18+.</p>", legalBtn:"接受", clearMsg:"清除？", intro:"你好。", profileTitle:"简介", profileSubtitle:"安全。", startBtn:"开始", gender:["性别?", "女", "男"], age:["年龄?", "18-24", "25+"], job:["职业?", "学生", "工作", "家庭主妇"], relation:["状态?", "单身"], mood:["心情?", "好", "坏"] }
+};
+
 const AIController = {
     history: [], userProfile: {}, genderMode: 'female',
     loadData() {
@@ -539,5 +546,3 @@ window.onload = () => app.init();
 </script>
 </body>
 </html>
-
-
