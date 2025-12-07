@@ -748,25 +748,17 @@ const AIController = {
     // --- PERSISTENT STORAGE ---
     loadData() {
         try {
-            const profile = localStorage.getItem('dert_sirdasi_profile');
-            if (profile) this.userProfile = JSON.parse(profile);
-            return !!profile;
+            const h = localStorage.getItem('dert_sirdasi_profile'); if (profile) this.userProfile = JSON.parse(h);
+            const p = localStorage.getItem('dert_sirdasi_profile'); if(p) this.userProfile = JSON.parse(p);
+            return !!p;
         } catch(e) {
             return false;
         }
     },
 
-    saveProfile(profile) {
-        try {
-            localStorage.setItem('dert_sirdasi_profile', JSON.stringify(profile));
-            this.userProfile = profile;
-        } catch(e) {}
-    },
-
-    clearChatHistory() {
-        this.history = [];
-        // Only clear history, NOT profile
-    },
+    saveProfile(p) { localStorage.setItem('dert_sirdasi_profile', JSON.stringify(p)); this.userProfile = p; },
+    saveHistory() { localStorage.setItem('dert_sirdasi_profile', JSON.stringify(this.history)); },
+    clear() { this.history = []; localStorage.removeItem('dert_sirdasi_profile'); },
     
     getPersonas(profile) {
         const age = profile.age;
@@ -1323,5 +1315,6 @@ window.onload = () => {
 </body>
 
 </html>
+
 
 
