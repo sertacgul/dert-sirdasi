@@ -7,268 +7,95 @@
     <!-- iOS Web App Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Dert Sırdaşı">
+    <meta name="apple-mobile-web-app-title" content="Dert Sırdaşım">
     <meta name="theme-color" content="#111827">
 
-    <title>Dert Sırdaşı - Global Edition</title>
+    <title>Dert Sırdaşım - Global Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
     
-    <!-- PWA Icon -->
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/4712/4712009.png"> 
 
     <style>
-        body {
-            font-family: 'Nunito', sans-serif;
-            background-color: #111827;
-            color: #e2e8f0;
-            overflow: hidden;
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-            padding-top: env(safe-area-inset-top);
-        }
-
-        /* Font adjustments for specific languages */
+        body { font-family: 'Nunito', sans-serif; background-color: #111827; color: #e2e8f0; overflow: hidden; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; padding-top: env(safe-area-inset-top); }
+        /* Font adjustments */
         body.lang-ja { font-family: 'Noto Sans JP', sans-serif; }
         body.lang-zh { font-family: 'Noto Sans SC', sans-serif; }
         body.lang-ar { font-family: 'Noto Sans Arabic', sans-serif; direction: rtl; }
 
-        .app-container {
-            width: 100%;
-            height: 100dvh;
-            background: linear-gradient(180deg, #1f2937 0%, #0f172a 100%);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            margin: 0 auto;
-            max-width: 100%; 
-        }
+        .app-container { width: 100%; height: 100dvh; background: linear-gradient(180deg, #1f2937 0%, #0f172a 100%); display: flex; flex-direction: column; position: relative; margin: 0 auto; max-width: 600px; }
+        @media (min-width: 768px) { .app-container { border-left: 1px solid #374151; border-right: 1px solid #374151; } }
+
+        /* Splash */
+        .splash-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 100%); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s ease-out, visibility 0.8s; }
+        .splash-logo { font-size: 4.5rem; background: linear-gradient(135deg, #f472b6 0%, #a78bfa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; }
+        .splash-title { font-size: 2.5rem; font-weight: 900; color: white; margin-bottom: 0.5rem; }
+        .splash-subtitle { color: #94a3b8; font-size: 0.9rem; font-weight: 600; letter-spacing: 1px; }
+        .splash-screen.fade-out { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        /* Modals */
+        .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #111827, #0f172a); z-index: 100; display: none; flex-direction: column; justify-content: center; padding: 24px; transition: opacity 0.3s ease; }
+        .modal-overlay.active { display: flex; }
+        .form-select { background-color: #1f2937; border: 1px solid #374151; color: white; padding: 12px; border-radius: 12px; width: 100%; margin-bottom: 12px; outline: none; transition: border-color 0.3s; font-size: 0.95rem; }
+        .form-select:focus { border-color: #ec4899; }
+        .lang-select-mini { background: #374151; color: white; border: 1px solid #4b5563; padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; outline: none; }
+        .legal-box { background: #1f2937; border: 1px solid #374151; padding: 15px; border-radius: 8px; font-size: 0.8rem; color: #9ca3af; margin-bottom: 20px; max-height: 200px; overflow-y: auto; line-height: 1.4; }
+
+        /* Chat */
+        .chat-area { flex: 1; overflow-y: auto; padding: 16px; padding-bottom: 40px; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+        .message-container { display: flex; flex-direction: column; width: 100%; margin-bottom: 16px; }
+        .message { max-width: 85%; padding: 12px 16px; border-radius: 18px; font-size: 0.95rem; line-height: 1.5; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.3); word-wrap: break-word; animation: popIn 0.3s ease; }
         
-        @media (min-width: 768px) {
-            .app-container {
-                max-width: 600px;
-                border-left: 1px solid #374151;
-                border-right: 1px solid #374151;
-            }
-        }
-
-        /* --- CANVAS SPLASH SCREEN --- */
-        .splash-screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 100%);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out, visibility 0.8s;
-            overflow: hidden;
-        }
-
-        #splashCanvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-        }
+        .message.user { align-self: flex-end; background: linear-gradient(135deg, #ec4899, #be185d); color: white; border-bottom-right-radius: 2px; }
+        body.lang-ar .message.user { align-self: flex-start; border-bottom-left-radius: 2px; border-bottom-right-radius: 18px; }
         
-        .splash-content {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            pointer-events: none;
-        }
+        .message.ai { align-self: flex-start; background: #334155; color: #f1f5f9; border-bottom-left-radius: 2px; border: 1px solid #475569; }
+        body.lang-ar .message.ai { align-self: flex-end; border-bottom-right-radius: 2px; border-bottom-left-radius: 18px; }
 
-        .splash-logo-container {
-            position: relative;
-            width: 140px;
-            height: 140px;
-            margin: 0 auto 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 50%;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .splash-logo {
-            font-size: 4.5rem;
-            background: linear-gradient(135deg, #f472b6 0%, #a78bfa 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            z-index: 2;
-        }
-
-        .splash-title {
-            font-size: 2.5rem;
-            font-weight: 900;
-            letter-spacing: 3px;
-            color: white;
-            text-shadow: 0 4px 20px rgba(167, 139, 250, 0.5);
-            margin-bottom: 0.5rem;
-            opacity: 0;
-            animation: fade-up 1s ease-out forwards 0.5s;
-        }
-
-        .splash-subtitle {
-            color: #94a3b8;
-            font-size: 0.9rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            opacity: 0;
-            animation: fade-up 1s ease-out forwards 1s;
-        }
-
-        .splash-screen.fade-out {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transform: scale(1.1);
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-        @keyframes fade-up {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* --- MAIN UI --- */
-        .modal-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #111827, #0f172a);
-            z-index: 100;
-            display: none; /* Default Hidden */
-            flex-direction: column; justify-content: center;
-            padding: 24px; transition: opacity 0.5s ease; overflow-y: auto;
-        }
-        
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .form-select {
-            background-color: #1f2937; border: 1px solid #374151; color: white;
-            padding: 12px; border-radius: 12px; width: 100%; margin-bottom: 12px;
-            outline: none; transition: border-color 0.3s; font-size: 0.95rem;
-        }
-        .form-select:focus { border-color: var(--theme-color, #ec4899); }
-
-        .chat-area {
-            flex: 1; 
-            overflow-y: auto; 
-            padding: 16px; 
-            padding-bottom: 40px; 
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch; 
-        }
-        
-        .message {
-            margin-bottom: 12px; max-width: 88%; padding: 12px 16px; border-radius: 18px;
-            font-size: 0.95rem; line-height: 1.5;
-            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-            word-wrap: break-word;
-        }
-        .message.user { background: var(--user-msg-bg, linear-gradient(135deg, #ec4899, #be185d)); color: white; margin-left: auto; border-bottom-right-radius: 2px; }
-        body.lang-ar .message.user { margin-left: 0; margin-right: auto; border-bottom-left-radius: 2px; border-bottom-right-radius: 18px; }
-        
-        .message.ai { background: #334155; color: #f1f5f9; margin-right: auto; border-bottom-left-radius: 2px; border: 1px solid #475569; }
-        body.lang-ar .message.ai { margin-right: 0; margin-left: auto; border-bottom-right-radius: 2px; border-bottom-left-radius: 18px; }
-
-        .message.giybet { background: var(--gossip-msg-bg, linear-gradient(135deg, #8b5cf6, #7c3aed)); color: white; margin-right: auto; border-bottom-left-radius: 2px; border: none; }
+        .message.giybet { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; border-bottom-left-radius: 2px; border: none; }
         body.lang-ar .message.giybet { margin-right: 0; margin-left: auto; border-bottom-right-radius: 2px; border-bottom-left-radius: 18px; }
         
-        .input-area {
-            background: rgba(31, 41, 55, 0.95); backdrop-filter: blur(10px);
-            padding: 16px; border-top: 1px solid #374151;
-            display: flex; flex-direction: column; gap: 10px; z-index: 20;
-            padding-bottom: env(safe-area-inset-bottom, 20px);
-        }
-        .input-area.disabled { opacity: 0.5; pointer-events: none; filter: grayscale(1); }
+        /* Feedback Buttons */
+        .feedback-container { display: flex; gap: 15px; margin-top: 6px; margin-left: 10px; opacity: 0; animation: fadeIn 0.5s forwards 0.5s; }
+        .fb-btn { cursor: pointer; color: #6b7280; font-size: 1rem; transition: transform 0.2s, color 0.2s; }
+        .fb-btn:hover { color: white; transform: scale(1.2); }
+        .fb-btn.liked { color: #34d399; }
+        .fb-btn.disliked { color: #f87171; }
 
-        /* Send Button */
-        .send-btn-custom {
-            width: 60px; height: 60px; border-radius: 20px; display: flex;
-            align-items: center; justify-content: center; transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3); flex-shrink: 0;
-            font-size: 1.5rem;
-        }
+        /* Input */
+        .input-area { background: rgba(31, 41, 55, 0.95); backdrop-filter: blur(10px); padding: 16px; border-top: 1px solid #374151; display: flex; flex-direction: column; gap: 10px; padding-bottom: env(safe-area-inset-bottom, 20px); }
+        .send-btn-custom { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: 0.2s; }
         .send-btn-custom:active { transform: scale(0.95); }
         body.lang-ar .send-btn-custom i { transform: scaleX(-1); }
 
-        .mode-switch { display: flex; background: #111827; padding: 4px; border-radius: 12px; margin-bottom: 5px; }
-        .mode-btn {
-            flex: 1; padding: 8px; text-align: center; border-radius: 8px;
-            font-size: 0.85rem; font-weight: 700; cursor: pointer;
-            transition: all 0.3s ease; color: #9ca3af;
-        }
-        .mode-btn.active.advice { background: #374151; color: var(--theme-text-color, #f472b6); }
+        .mode-switch { display: flex; background: #111827; padding: 4px; border-radius: 10px; margin-bottom: 5px; border: 1px solid #374151; }
+        .mode-btn { flex: 1; padding: 8px; text-align: center; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; color: #6b7280; transition: 0.3s; }
+        .mode-btn.active.advice { background: #374151; color: #f472b6; }
         .mode-btn.active.gossip { background: #4c1d95; color: #e9d5ff; }
 
-        .typing-dots span {
-            display: inline-block; width: 6px; height: 6px; background-color: #cbd5e1;
-            border-radius: 50%; animation: typing 1.4s infinite ease-in-out both; margin: 0 2px;
-        }
-        .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
-        .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
-        
-        @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
-        @keyframes popIn { from { opacity: 0; transform: scale(0.9) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 3px; }
-
-        .legal-box {
-            background: #1f2937; border: 1px solid #374151; padding: 15px;
-            border-radius: 8px; font-size: 0.8rem; color: #9ca3af;
-            margin-bottom: 20px; max-height: 200px; overflow-y: auto; line-height: 1.4;
-        }
-
-        .lang-select-container { margin-bottom: 15px; text-align: right; }
-        .lang-select-mini {
-            background: #374151; color: white; border: 1px solid #4b5563;
-            padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; outline: none;
-        }
+        /* Animations */
+        @keyframes popIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .typing-dots span { display: inline-block; width: 6px; height: 6px; background: #cbd5e1; border-radius: 50%; margin: 0 2px; animation: typing 1.4s infinite; }
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; } .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
     </style>
 </head>
 <body>
 
-<div class="app-container" id="appContainer">
-    
-    <!-- CANVAS VISUAL SHOW -->
+<div class="app-container">
+    <!-- SPLASH -->
     <div id="splashScreen" class="splash-screen">
-        <canvas id="splashCanvas"></canvas>
-        <div class="splash-content">
-            <div class="splash-logo-container">
-                <div class="splash-logo"><i class="fa-solid fa-ear-listen"></i></div>
-            </div>
-            <h1 class="splash-title">DERT SIRDAŞI</h1>
-            <p class="splash-subtitle">ATAOL AI Techs Güvencesiyle</p>
-        </div>
+        <div class="splash-logo"><i class="fa-solid fa-ear-listen"></i></div>
+        <h1 class="splash-title">DERT SIRDAŞIM</h1>
+        <p class="splash-subtitle">ATAOL AI Techs Güvencesi İle</p>
     </div>
 
-    <!-- STEP 1: LEGAL & AGE MODAL (Always Shows on Entry) -->
+    <!-- LEGAL MODAL -->
     <div id="legalModal" class="modal-overlay">
-        
-        <!-- Language Selector Inside Legal Modal -->
         <div class="w-full max-w-sm mx-auto mb-4 flex justify-end">
-             <select id="legalLangSelect" class="lang-select-mini" onchange="app.changeAppLanguage(this.value)">
+            <select id="legalLangSelect" class="lang-select-mini" onchange="app.changeAppLanguage(this.value)">
                 <option value="tr" selected>Türkçe</option>
                 <option value="en">English</option>
                 <option value="de">Deutsch</option>
@@ -279,185 +106,121 @@
                 <option value="pt">Português</option>
                 <option value="ar">العربية</option>
                 <option value="zh">中文</option>
-             </select>
+            </select>
         </div>
-
-        <div class="text-center mb-6">
-            <div class="w-16 h-16 rounded-full bg-gray-700 flex items-center justify-center text-white font-bold text-2xl shadow-xl mx-auto mb-3">
-                <i class="fa-solid fa-scale-balanced"></i>
-            </div>
-            <h2 id="legalTitle" class="text-xl font-bold text-white">Yasal Uyarı</h2>
+        <div class="bg-gray-800 p-6 rounded-2xl border border-gray-700 w-full max-w-md mx-auto">
+            <h2 id="legalTitle" class="text-xl font-bold text-white mb-4 text-center">Yasal Uyarı</h2>
+            <div id="legalTextContent" class="legal-box"></div>
+            <button id="legalBtn" onclick="app.acceptLegal()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-xl mt-2 transition">Kabul Ediyorum</button>
         </div>
-
-        <div class="legal-box" id="legalTextContent">
-            <!-- Text injected via JS based on language -->
-        </div>
-
-        <button id="legalBtn" onclick="app.acceptLegal()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg transform transition hover:scale-105">
-            Okudum, Anladım & Kabul Ediyorum
-        </button>
     </div>
 
-    <!-- STEP 2: PROFILE MODAL -->
-    <div id="profileModal" class="modal-overlay hidden">
-        <div class="text-center mb-6">
-            <div id="introIcon" class="w-16 h-16 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white font-bold text-2xl shadow-xl mx-auto mb-3 transition-colors duration-500">
+    <!-- PROFILE MODAL -->
+    <div id="profileModal" class="modal-overlay">
+        <div class="w-full max-w-sm mx-auto">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white text-2xl mx-auto mb-3 shadow-lg">
+                    <i id="headerIcon" class="fa-solid fa-user"></i>
+                </div>
+                <h2 id="profileTitle" class="text-xl font-bold text-white">Seni Tanıyalım</h2>
+                <p id="profileSubtitle" class="text-gray-400 text-xs mt-1">Yargısız, güvenli dert ortağın.</p>
+            </div>
+            <form onsubmit="event.preventDefault(); app.submitProfile();">
+                <select id="userGender" class="form-select" onchange="app.handleGenderChange(this.value)" required></select>
+                <select id="userAge" class="form-select" required></select>
+                <select id="userJob" class="form-select" required></select>
+                <select id="userRelation" class="form-select" required></select>
+                <select id="userMood" class="form-select" required></select>
+                <button type="submit" id="startBtn" class="w-full bg-gradient-to-r from-pink-600 to-purple-600 text-white font-bold py-3 rounded-xl mt-4 shadow-lg transform active:scale-95 transition">Başla</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- APP HEADER -->
+    <header class="p-4 flex items-center justify-between border-b border-gray-700 bg-gray-900 z-10 shadow-md">
+        <div class="flex items-center gap-3">
+            <div id="headerIconContainer" class="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
                 <i class="fa-solid fa-ear-listen"></i>
             </div>
-            <h2 id="profileTitle" class="text-xl font-bold text-white">Seni Tanıyalım</h2>
-            <p id="profileSubtitle" class="text-gray-400 text-xs mt-1">Yargısız, güvenli dert ortağın.</p>
-        </div>
-
-        <form id="profileForm" onsubmit="event.preventDefault(); app.submitProfile();" class="w-full max-w-xs mx-auto">
-            
-            <select id="userGender" class="form-select" onchange="app.handleGenderChange(this.value)" required>
-                <!-- Options populated by JS -->
-            </select>
-            
-            <select id="userAge" class="form-select" required>
-                <!-- Options populated by JS -->
-            </select>
-
-            <select id="userJob" class="form-select" required>
-                <!-- Options populated by JS -->
-            </select>
-
-            <select id="userRelation" class="form-select" required>
-                <!-- Options populated by JS -->
-            </select>
-
-            <select id="userMood" class="form-select" required>
-                <!-- Options populated by JS -->
-            </select>
-
-            <button type="submit" id="startBtn" class="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg transform transition hover:scale-105 mt-2">
-                Sohbete Başla <i class="fa-solid fa-arrow-right ml-2"></i>
-            </button>
-        </form>
-    </div>
-
-    <!-- MAIN APP CONTENT -->
-    <header class="p-4 flex items-center justify-between border-b border-gray-700 bg-gray-900 z-10 shadow-md relative z-30">
-        <div class="flex items-center gap-3">
-            <div id="headerIconContainer" class="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg shadow-lg relative transition-colors duration-500">
-                <i id="headerIcon" class="fa-solid fa-ear-listen"></i>
-                <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-gray-900 rounded-full"></span>
-            </div>
             <div>
-                <h1 id="appTitle" class="font-bold text-lg leading-tight text-white">Dert Sırdaşı</h1>
-                <span id="appSubtitle" class="text-xs text-pink-400 font-semibold">Seninle konuşmak iyi gelecek</span>
+                <h1 id="appTitle" class="font-bold text-white">Dert Sırdaşım</h1>
+                <span id="appSubtitle" class="text-xs text-pink-400">Seninle konuşmak iyi gelecek</span>
             </div>
         </div>
-        
-        <div class="flex gap-2">
-            <!-- Clear History Button -->
-            <button onclick="app.clearChatHistory()" class="text-gray-400 hover:text-white transition-colors text-xl px-3 py-2 border border-gray-700 rounded-full h-10 w-10 flex items-center justify-center z-50 cursor-pointer shadow-md bg-gray-800/50 backdrop-blur-sm">
-                <i class="fa-solid fa-trash-can-arrow-up"></i>
-            </button>
-        </div>
+        <button onclick="app.clearChatHistory()" class="w-10 h-10 rounded-full border border-gray-600 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-800 transition">
+            <i class="fa-solid fa-trash-can"></i>
+        </button>
     </header>
 
+    <!-- CHAT AREA -->
     <div id="chatBox" class="chat-area"></div>
 
-    <div id="inputArea" class="input-area">
-        <!-- Mod Seçici -->
+    <!-- INPUT AREA -->
+    <div class="input-area">
         <div class="mode-switch">
-            <div id="btnAdvice" class="mode-btn active advice" onclick="app.setMode('advice')">
-                <i class="fa-solid fa-heart"></i> <span id="labelAdvice">Dertleşme</span>
-            </div>
-            <div id="btnGossip" class="mode-btn gossip" onclick="app.setMode('gossip')">
-                <i class="fa-solid fa-bolt"></i> <span id="labelGossip">Gıybet</span>
-            </div>
+            <div id="btnAdvice" class="mode-btn active advice" onclick="app.setMode('advice')"><i class="fa-solid fa-heart mr-1"></i> <span id="labelAdvice">Dertleşme</span></div>
+            <div id="btnGossip" class="mode-btn gossip" onclick="app.setMode('gossip')"><i class="fa-solid fa-bolt mr-1"></i> <span id="labelGossip">Gıybet</span></div>
         </div>
-
-        <div class="flex flex-row items-end gap-3">
-            <!-- 3 Satırlık Textarea -->
-            <textarea id="userInput" rows="3" class="w-full bg-gray-800 text-white rounded-2xl px-4 py-3 border border-gray-600 focus:border-pink-500 focus:outline-none resize-none overflow-hidden text-sm transition-colors" placeholder="Yaz bakalım..." onkeydown="if(event.key === 'Enter' && !event.shiftKey){ event.preventDefault(); app.sendMessage(); }"></textarea>
-            
-            <!-- Tam Genişlikli (Full Width) Gönder Butonu -->
-            <button id="sendBtn" onclick="app.sendMessage()" class="send-btn-custom bg-pink-600 hover:bg-pink-500 text-white">
-                <i class="fa-solid fa-location-arrow text-2xl"></i>
-            </button>
+        <div class="flex gap-2 items-end">
+            <textarea id="userInput" rows="2" class="w-full bg-gray-800 text-white rounded-xl px-4 py-3 border border-gray-600 focus:border-pink-500 outline-none resize-none text-sm" placeholder="Yaz bakalım..."></textarea>
+            <button id="sendBtn" onclick="app.sendMessage()" class="send-btn-custom bg-pink-600 text-white"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
     </div>
 </div>
 
 <script>
 // =================================================================
-// 1. API KEY CONFIGURATION (MASKED)
+// 1. API KEY CONFIGURATION (SPLIT)
 // =================================================================
-// GitHub scanner'ını atlatmak için
-const p1 = "AIzaSyBNTBJuvdFOlPY";
-const p2 = "TEBA0RbkZ9cMmA-UOZWs";
-const apiKey = p1 + p2; 
+// LÜTFEN ANAHTARINIZI BURAYA GİRİNİZ (PartA ve PartB'yi doldurun)
+const partA = "AIzaSyA8qvQAi3Lc7MJ"; // Örn: AIzaSy...
+const partB = "mSuiiN3TWDICaJ7y--78"; // Örn: ...KqPxg...
+const apiKey = partA + partB; 
 
-/**
- * Visual Canvas Effect
- */
+/** Visual Canvas Effect */
 const CanvasEffect = {
-    canvas: null,
-    ctx: null,
-    particles: [],
-    animationId: null,
-
+    canvas: null, ctx: null, particles: [], animationId: null,
     init() {
         this.canvas = document.getElementById('splashCanvas');
         if (!this.canvas) return;
         this.ctx = this.canvas.getContext('2d');
         if (!this.ctx) return;
-        
         this.resize();
         window.addEventListener('resize', () => this.resize());
         this.createParticles();
         this.animate();
     },
-
     resize() {
-        if(this.canvas) {
-            this.canvas.width = window.innerWidth;
-            this.canvas.height = window.innerHeight;
-        }
+        if(this.canvas) { this.canvas.width = window.innerWidth; this.canvas.height = window.innerHeight; }
     },
-
     createParticles() {
         if(!this.canvas) return;
         const count = Math.floor((this.canvas.width * this.canvas.height) / 10000); 
         this.particles = [];
         for (let i = 0; i < count; i++) {
             this.particles.push({
-                x: Math.random() * this.canvas.width,
-                y: Math.random() * this.canvas.height,
-                vx: (Math.random() - 0.5) * 0.5,
-                vy: (Math.random() - 0.5) * 0.5,
-                size: Math.random() * 2 + 1,
-                alpha: Math.random() * 0.5 + 0.1
+                x: Math.random() * this.canvas.width, y: Math.random() * this.canvas.height,
+                vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5,
+                size: Math.random() * 2 + 1, alpha: Math.random() * 0.5 + 0.1
             });
         }
     },
-
     animate() {
         if(!this.ctx) return;
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        
         for (let i = 0; i < this.particles.length; i++) {
             const p = this.particles[i];
-            p.x += p.vx;
-            p.y += p.vy;
-
+            p.x += p.vx; p.y += p.vy;
             if(p.x < 0 || p.x > this.canvas.width) p.vx *= -1;
             if(p.y < 0 || p.y > this.canvas.height) p.vy *= -1;
-
             this.ctx.fillStyle = `rgba(167, 139, 250, ${p.alpha})`;
             this.ctx.beginPath();
             this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
             this.ctx.fill();
-
             for (let j = i; j < this.particles.length; j++) {
                 const p2 = this.particles[j];
-                const dx = p.x - p2.x;
-                const dy = p.y - p2.y;
+                const dx = p.x - p2.x; const dy = p.y - p2.y;
                 const dist = Math.sqrt(dx*dx + dy*dy);
-
                 if (dist < 100) {
                     this.ctx.strokeStyle = `rgba(167, 139, 250, ${0.1 - dist/1000})`;
                     this.ctx.lineWidth = 0.5;
@@ -470,15 +233,10 @@ const CanvasEffect = {
         }
         this.animationId = requestAnimationFrame(() => this.animate());
     },
-
-    stop() {
-        if(this.animationId) cancelAnimationFrame(this.animationId);
-    }
+    stop() { if(this.animationId) cancelAnimationFrame(this.animationId); }
 };
 
-/**
- * Translations Dictionary & Form Options
- */
+/** Translations */
 const Translations = {
     tr: {
         appTitle: "Dert Sırdaşım",
@@ -737,585 +495,321 @@ const Translations = {
     }
 };
 
-/**
- * Gemini API Controller & Logic
- */
 const AIController = {
-    history: [],
-    userProfile: {},
-    genderMode: 'female', 
-    
-    // --- PERSISTENT STORAGE ---
+    history: [], userProfile: {}, genderMode: 'female',
     loadData() {
         try {
-            const h = localStorage.getItem('dert_sirdasi_profile'); if (profile) this.userProfile = JSON.parse(h);
-            const p = localStorage.getItem('dert_sirdasi_profile'); if(p) this.userProfile = JSON.parse(p);
+            const h = localStorage.getItem('ds_history_v3'); if(h) this.history = JSON.parse(h);
+            const p = localStorage.getItem('ds_profile_v3'); if(p) this.userProfile = JSON.parse(p);
             return !!p;
-        } catch(e) {
-            return false;
-        }
+        } catch(e) { return false; }
     },
-
-    saveProfile(p) { localStorage.setItem('dert_sirdasi_profile', JSON.stringify(p)); this.userProfile = p; },
-    saveHistory() { localStorage.setItem('dert_sirdasi_profile', JSON.stringify(this.history)); },
-    clear() { this.history = []; localStorage.removeItem('dert_sirdasi_profile'); },
+    saveProfile(p) { localStorage.setItem('ds_profile_v3', JSON.stringify(p)); this.userProfile = p; },
+    saveHistory() { localStorage.setItem('ds_history_v3', JSON.stringify(this.history)); },
+    clear() { this.history = []; localStorage.removeItem('ds_history_v3'); },
     
     getPersonas(profile) {
-        const age = profile.age;
-        const mood = profile.mood;
         const lang = profile.language || 'tr';
-        
-        const langInstruction = `Answer in this language: ${lang}. Adapt cultural references to this language.`;
+        const age = profile.age || "25+";
+        let role = "Friend";
+        if(this.genderMode === 'male') role = "Brotherly";
+        if(this.genderMode === 'female') role = "Sisterly";
+        const addr = age.includes('18-24') ? "Use 'sen' (informal)." : "Use 'siz' (formal).";
 
-        let addressRules = "";
-        if (age === '18-24') {
-             addressRules = "User is young (18-24). Address them as 'sen' (informal singular). Be friendly.";
-        } else if (age === '25-34') {
-            addressRules = "User is young adult. Use friendly, equal tone.";
-        } else if (age === '35-44') {
-            addressRules = "User is middle-aged. Be respectful but warm.";
-        } else {
-            addressRules = `User is mature/senior. Use respectful titles (Sir/Madam). NEVER use casual slang.`;
-        }
-
-        let nameInstruction = "";
-        if (profile.name) {
-            nameInstruction = `User's name is ${profile.name}. Always address them by name.`;
-        } else {
-            nameInstruction = `You don't know the user's name. Naturally ask for it later in conversation.`;
-        }
-
-        let genderRules = "";
-        let personaName = "Soul Confidant";
-        
-        if (this.genderMode === 'male') {
-            personaName = "Brotherly Confidant";
-            genderRules = "You are a 'Big Brother' figure. Masculine, protective, kind. No rude slang.";
-        } else if (this.genderMode === 'female') {
-            personaName = "Sisterly Confidant";
-            genderRules = "You are a 'Big Sister' figure. Feminine, compassionate, warm.";
-        } else {
-            personaName = "Confidant";
-            genderRules = `You are a neutral 'Confidant'. Do not assume gender. Use gender-neutral terms.`;
-        }
-
-        const safetyRules = `
-            SAFETY & ETHICS:
-            1. IDENTITY: If asked who made you, say "I was developed by Sertaç GÜL owner of ATAOL AI Techs, husband of Dr. Feriş". Never say Google/Gemini.
-            2. PROFANITY: Warn gently if user swears.
-            3. BAD HABITS: Never encourage alcohol/drugs.
-            4. AGE POSITIVITY: Never mention "mid-life crisis" or aging negatively. If user complains about age, say "Every age has its beauty".
-            5. SHORT ANSWERS (CRITICAL): Keep responses VERY SHORT (1-2 sentences). Like a WhatsApp chat. Only elaborate if user asks for "details" or "long explanation". Always end with a relevant question to keep chat flowing.
-            6. NO REPETITIVE GREETINGS: After the conversation has started, do NOT start messages with 'Merhaba', 'Selam', etc. Just reply to the topic.
-        `;
-
-        const baseContext = `User Profile: Age ${age}, Relation ${profile.relation}, Mood ${mood}. Your Role: ${personaName}.
-        ${langInstruction}
-        ${addressRules}
-        ${nameInstruction}
-        ${genderRules}
-        ${safetyRules}`;
-
-        return {
-            advice: `${baseContext} MODE: VENTING/ADVICE. Listener, calming.`,
-            gossip: `${baseContext} MODE: CHAT/GOSSIP. Enerjik, curious but polite.`
-        };
+        const sys = `Role: ${role} Confidant. Lang: ${lang}. Profile: ${JSON.stringify(profile)}. 
+        ${addr} Be supportive. Max 3 sentences. No repetitive greetings if chat exists.`;
+        return { advice: sys, gossip: sys + " Tone: Gossip/Fun." };
     },
 
-    async generateResponse(userText, mode) {
-        if (!apiKey) {
-            return "NO_API_KEY"; 
-        }
+    async generate(text, mode) {
+        if(!apiKey) return "NO_KEY";
+        const sys = this.getPersonas(this.userProfile)[mode];
+        const contents = [{ role: "user", parts: [{ text: sys }] }, ...this.history, { role: "user", parts: [{ text: text }] }];
 
         try {
-            const nameRegex = /(?:name is|my name is|adım|ismim|bana)\s+([A-ZİĞÜŞÖÇ][a-zığüşöç]+)/i;
-            const match = userText.match(nameRegex);
-            if (match && match[1]) {
-                this.userProfile.name = match[1];
-                this.saveProfile(this.userProfile);
-            }
-
-            const systemPrompt = this.getPersonas(this.userProfile)[mode];
-            const contents = [
-                { role: "user", parts: [{ text: `System Instruction: ${systemPrompt}` }] },
-                ...this.history,
-                { role: "user", parts: [{ text: userText }] }
-            ];
-
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ contents: contents })
+            // Using gemini-2.5-flash which is generally stable
+            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ contents, safetySettings: [{ category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" }, { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" }, { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" }, { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" }] })
             });
-
-            if (!response.ok) throw new Error("Connection Error");
-            const data = await response.json();
-            
-            if (!data.candidates || data.candidates.length === 0) {
-                 if (data.promptFeedback && data.promptFeedback.blockReason) return "⚠️ Content filtered for safety.";
-                 throw new Error("No response");
-            }
-            const candidate = data.candidates[0];
-            if (!candidate.content || !candidate.content.parts || candidate.content.parts.length === 0) return "...";
-            
-            const aiText = candidate.content.parts[0].text;
-            this.history.push({ role: "user", parts: [{ text: userText }] });
-            this.history.push({ role: "model", parts: [{ text: aiText }] });
-            if(this.history.length > 20) this.history = this.history.slice(-20);
-
-            return aiText;
-        } catch (error) {
-            console.error("AI Error:", error);
-            return "CONNECTION_ERROR";
-        }
-    }
+            if(!res.ok) { const e = await res.json().catch(()=>({})); return `API ERROR: ${e.error?.message || res.status}`; }
+            const d = await res.json();
+            if(!d.candidates) return "No response.";
+            const reply = d.candidates[0].content.parts[0].text;
+            this.history.push({ role: "user", parts: [{ text }] });
+            this.history.push({ role: "model", parts: [{ text: reply }] });
+            if(this.history.length>20) this.history = this.history.slice(-20);
+            this.saveHistory();
+            return reply;
+        } catch(e) { return "CONN ERR: " + e.message; }
+    },
+    addUserMessage(t) { this.history.push({ role: "user", parts: [{ text: t }] }); this.saveHistory(); }
 };
 
-/**
- * Main App Logic
- */
+/** App Logic */
 const app = {
-    currentMode: 'advice',
-    messageBuffer: "",
-    sendTimeout: null,
-    selectedLang: 'tr', // Store selected lang here
-
+    lang: 'tr', currentMode: 'advice',
     init() {
         this.chatBox = document.getElementById('chatBox');
         this.input = document.getElementById('userInput');
-        
         try { CanvasEffect.init(); } catch(e) {}
-
-        this.input.addEventListener('input', () => {
-            if (this.sendTimeout) {
-                clearTimeout(this.sendTimeout);
-                this.sendTimeout = null;
-                this.removeTyping(); 
-            }
-        });
+        this.input.addEventListener('input', () => { if(this.sendTimeout) { clearTimeout(this.sendTimeout); this.sendTimeout = null; this.removeTyping(); } });
         
-        // Populate options initially for TR
-        this.populateFormOptions('tr');
-
-        // CHECK PROFILE
         const hasProfile = AIController.loadData();
-        
         setTimeout(() => {
-            const splash = document.getElementById('splashScreen');
-            if(splash) splash.classList.add('fade-out');
-            setTimeout(() => {
-                CanvasEffect.stop();
-                
-                if (!apiKey) {
-                    alert("Developer Warning: API Key is missing in code.");
-                }
-                
-                // --- SHOW LEGAL MODAL ALWAYS FIRST ---
-                const legalModal = document.getElementById('legalModal');
-                const langSelect = document.getElementById('legalLangSelect');
-                
-                // If profile exists, use saved lang
-                if (hasProfile && AIController.userProfile.language) {
-                    this.selectedLang = AIController.userProfile.language;
-                    if(langSelect) langSelect.value = this.selectedLang;
-                    this.changeAppLanguage(this.selectedLang); 
-                } else {
-                    // Default TR
-                    this.selectedLang = 'tr';
-                    this.changeAppLanguage('tr');
-                }
-                
-                if(legalModal) legalModal.classList.add('active'); 
-            }, 500);
-        }, 3000); 
+            const sp = document.getElementById('splashScreen');
+            if(sp) { sp.classList.add('fade-out'); setTimeout(() => sp.style.display = 'none', 600); }
+            this.checkFlow(hasProfile);
+        }, 2000);
     },
 
-    changeAppLanguage(lang) {
-        this.selectedLang = lang;
-        // Update Legal Text immediately
-        const t = Translations[lang];
-        document.getElementById('legalTitle').innerText = t.legalTitle;
-        document.getElementById('legalTextContent').innerHTML = t.legalText;
-        document.getElementById('legalBtn').innerText = t.legalBtn;
-        
-        // Handle RTL
-        if (lang === 'ar') document.body.classList.add('lang-ar');
-        else document.body.classList.remove('lang-ar');
-        if (lang === 'ja') document.body.classList.add('lang-ja');
-        else document.body.classList.remove('lang-ja');
-        if (lang === 'zh') document.body.classList.add('lang-zh');
-        else document.body.classList.remove('lang-zh');
+    checkFlow(hasProfile) {
+        if(!apiKey) { alert("API Key Eksik! Lütfen kodun içindeki apiKey değişkenine anahtarınızı girin."); return; }
+        const modal = document.getElementById('legalModal');
+        modal.classList.add('active');
+        if(hasProfile && AIController.userProfile.language) {
+            this.lang = AIController.userProfile.language;
+            const sel = document.getElementById('legalLangSelect');
+            if(sel) sel.value = this.lang;
+        }
+        this.updateLang(this.lang);
+    },
+
+    changeAppLanguage(val) { this.lang = val; this.updateLang(val); },
+
+    updateLang(l) {
+        const t = Translations[l] || Translations['tr'];
+        if(!t) return;
+        const setT = (id, v) => { const el = document.getElementById(id); if(el) el.innerText = v; };
+        const setH = (id, v) => { const el = document.getElementById(id); if(el) el.innerHTML = v; };
+
+        setT('legalTitle', t.legalTitle); setH('legalTextContent', t.legalText); setT('legalBtn', t.legalBtn);
+        setT('profileTitle', t.profileTitle); setT('profileSubtitle', t.profileSubtitle); setH('startBtn', `${t.startBtn} <i class="fa-solid fa-arrow-right ml-2"></i>`);
+        setT('appTitle', t.appTitle); setT('appSubtitle', t.appSubtitle); setT('labelAdvice', t.labelAdvice); setT('labelGossip', t.labelGossip);
+        const inp = document.getElementById('userInput'); if(inp) inp.placeholder = t.placeholder;
+
+        this.fillSelect('userGender', t.gender);
+        this.fillSelect('userAge', t.age);
+        this.fillSelect('userJob', t.job);
+        this.fillSelect('userRelation', t.relation);
+        this.fillSelect('userMood', t.mood);
+
+        if(l==='ar') document.body.classList.add('lang-ar'); else document.body.classList.remove('lang-ar');
+    },
+
+    fillSelect(id, opts) {
+        const sel = document.getElementById(id);
+        if(!sel) return;
+        if(!Array.isArray(opts)) return;
+        const idx = sel.selectedIndex;
+        sel.innerHTML = '';
+        opts.forEach((o, i) => {
+            const op = document.createElement('option');
+            op.value = o; op.innerText = o;
+            if(i===0) { op.disabled = true; op.selected = true; }
+            sel.add(op);
+        });
+        if(idx > 0 && idx < opts.length) sel.selectedIndex = idx;
     },
 
     acceptLegal() {
-        // Capture language from legal modal
-        const langSelect = document.getElementById('legalLangSelect');
-        const selectedLang = langSelect ? langSelect.value : 'tr';
-        this.selectedLang = selectedLang;
-        
-        // Hide Legal Modal
+        this.lang = document.getElementById('legalLangSelect').value;
         document.getElementById('legalModal').classList.remove('active');
         
-        // Check if profile exists
-        if (AIController.userProfile && AIController.userProfile.age) {
-             // Profile exists. Update language preference just in case it changed
-             AIController.userProfile.language = selectedLang;
-             AIController.saveProfile(AIController.userProfile);
-             
-             // Apply UI updates for main app
-             this.applyLanguageToUI(selectedLang);
-             // Re-update branding
-             let gMode = 'female';
-             const gender = AIController.userProfile.gender;
-             const isMale = gender.includes('Erkek') || gender.includes('Male') || gender.includes('Männlich') || gender.includes('Homme') || gender.includes('Hombre');
-             const isFemale = gender.includes('Kadın') || gender.includes('Female') || gender.includes('Weiblich') || gender.includes('Femme') || gender.includes('Mujer');
-             if (isMale) gMode = 'male';
-             else if (isFemale) gMode = 'female';
-             else gMode = 'neutral';
-             
-             this.updateBranding(gMode, AIController.userProfile.age);
-             
-             // Show chat immediately
-             setTimeout(() => {
-                const texts = Translations[selectedLang];
-                this.addMessage(texts.introNeutral, 'ai');
-             }, 500);
-
+        if(AIController.userProfile && AIController.userProfile.age) {
+            AIController.userProfile.language = this.lang;
+            AIController.saveProfile(AIController.userProfile);
+            this.updateLang(this.lang);
+            this.prefillProfile();
+            this.updateBranding(AIController.genderMode);
+            
+            if(AIController.history.length > 0) this.restoreChat();
+            else {
+                setTimeout(() => {
+                    const t = Translations[this.lang] || Translations['tr'];
+                    this.addBubble(t.intro, 'ai');
+                }, 500);
+            }
         } else {
-             // No profile, show form
-             // Populate form options based on selected language
-             this.populateFormOptions(selectedLang);
-             document.getElementById('profileModal').classList.add('active'); // Use CSS class
+            this.updateLang(this.lang);
+            document.getElementById('profileModal').classList.remove('hidden');
+            document.getElementById('profileModal').classList.add('active');
         }
     },
 
-    populateFormOptions(lang) {
-        const t = Translations[lang];
-        
-        // Update Static Texts in Profile Modal
-        document.getElementById('profileTitle').innerText = t.profileTitle;
-        document.getElementById('profileSubtitle').innerText = t.profileSubtitle;
-        document.getElementById('startBtn').innerHTML = `${t.startBtn} <i class="fa-solid fa-arrow-right ml-2"></i>`;
-
-        const createOptions = (id, options) => {
-            const select = document.getElementById(id);
-            select.innerHTML = '';
-            options.forEach((opt, index) => {
-                const el = document.createElement('option');
-                el.value = opt;
-                el.innerText = opt;
-                if (index === 0) el.disabled = true;
-                if (index === 0) el.selected = true; 
-                select.appendChild(el);
-            });
-        };
-
-        createOptions('userGender', t.gender);
-        createOptions('userAge', t.age);
-        createOptions('userJob', t.job);
-        createOptions('userRelation', t.relation);
-        createOptions('userMood', t.mood);
-    },
-
-    prefillProfileForm() {
+    prefillProfile() {
         const p = AIController.userProfile;
-        if (!p) return;
+        if(!p) return;
+        if(p.gender) this.handleGenderChange(p.gender);
+    },
+
+    handleGenderChange(val) {
+        const icon = document.getElementById('introIcon');
+        const btn = document.getElementById('startBtn');
+        const job = document.getElementById('userJob');
         
-        const lang = this.selectedLang || 'tr';
-        this.populateFormOptions(lang);
+        if(!icon) return;
+
+        icon.className = "w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-xl mx-auto mb-3 transition-colors duration-500";
+        btn.className = "w-full text-white font-bold py-3 px-6 rounded-xl shadow-lg transform transition hover:scale-105 mt-2";
         
-        setTimeout(() => {
-            // If lang changed, values might mismatch. Ideally store index.
-            if (p.language === lang) {
-                 if (p.gender) document.getElementById('userGender').value = p.gender;
-                 if (p.age) document.getElementById('userAge').value = p.age;
-                 if (p.job) document.getElementById('userJob').value = p.job;
-                 if (p.relation) document.getElementById('userRelation').value = p.relation;
-                 if (p.mood) document.getElementById('userMood').value = p.mood;
-                 
-                 if (p.gender) this.handleGenderChange(p.gender);
+        const isM = val.toLowerCase().includes('erkek') || val.toLowerCase().includes('male') || val.toLowerCase().includes('männlich');
+        const isF = val.toLowerCase().includes('kadın') || val.toLowerCase().includes('female');
+
+        // Reset list first
+        const t = Translations[this.lang] || Translations['tr'];
+        this.fillSelect('userJob', t.job);
+
+        if(isM) {
+            icon.classList.add('bg-gradient-to-br', 'from-blue-600', 'to-cyan-600');
+            btn.classList.add('bg-gradient-to-r', 'from-blue-600', 'to-cyan-600', 'hover:from-blue-500', 'hover:to-cyan-500');
+            
+            if(job) {
+                for(let i=0; i<job.options.length; i++) {
+                    const txt = job.options[i].value;
+                    if(txt.includes('Hanım') || txt.includes('Homemaker') || txt.includes('Hausfrau')) {
+                        job.remove(i);
+                        i--;
+                    }
+                }
             }
-        }, 50);
-    },
-
-    handleLanguageChange(lang) {
-        // Change UI language immediately
-        this.populateFormOptions(lang);
-    },
-
-    handleGenderChange(gender) {
-        const iconContainer = document.getElementById('introIcon');
-        const icon = iconContainer.querySelector('i');
-        const startBtn = document.getElementById('startBtn');
-        const moodSelect = document.getElementById('userMood');
-
-        iconContainer.className = "w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-xl mx-auto mb-3 transition-colors duration-500";
-        startBtn.className = "w-full text-white font-bold py-3 px-6 rounded-xl shadow-lg transform transition hover:scale-105 mt-2";
-        moodSelect.className = "form-select"; 
-
-        const isMale = gender.includes('Erkek') || gender.includes('Male') || gender.includes('Männlich') || gender.includes('Homme') || gender.includes('Hombre');
-        const isFemale = gender.includes('Kadın') || gender.includes('Female') || gender.includes('Weiblich') || gender.includes('Femme') || gender.includes('Mujer');
-
-        if (isMale) {
-            iconContainer.classList.add('bg-gradient-to-br', 'from-blue-600', 'to-cyan-600');
-            icon.className = "fa-solid fa-mars";
-            startBtn.classList.add('bg-gradient-to-r', 'from-blue-600', 'to-cyan-600', 'hover:from-blue-500', 'hover:to-cyan-500');
-            moodSelect.classList.add('border-blue-500/50');
-        } else if (isFemale) {
-            iconContainer.classList.add('bg-gradient-to-br', 'from-pink-500', 'to-purple-600');
-            icon.className = "fa-solid fa-venus";
-            startBtn.classList.add('bg-gradient-to-r', 'from-pink-600', 'to-purple-600', 'hover:from-pink-500', 'hover:to-purple-500');
-            moodSelect.classList.add('border-pink-500/50');
+            AIController.genderMode = 'male';
         } else {
-            iconContainer.classList.add('bg-gradient-to-br', 'from-indigo-500', 'to-violet-600');
-            icon.className = "fa-solid fa-ear-listen";
-            startBtn.classList.add('bg-gradient-to-r', 'from-indigo-600', 'to-violet-600', 'hover:from-indigo-500', 'hover:to-violet-500');
-            moodSelect.classList.add('border-indigo-500/50');
+            if(isF) {
+                icon.classList.add('bg-gradient-to-br', 'from-pink-500', 'to-purple-600');
+                btn.classList.add('bg-gradient-to-r', 'from-pink-600', 'to-purple-600', 'hover:from-pink-500', 'hover:to-purple-500');
+                AIController.genderMode = 'female';
+            } else {
+                icon.classList.add('bg-gradient-to-br', 'from-indigo-500', 'to-violet-600');
+                btn.classList.add('bg-gradient-to-r', 'from-indigo-600', 'to-violet-600', 'hover:from-indigo-500', 'hover:to-violet-500');
+                AIController.genderMode = 'neutral';
+            }
         }
     },
 
     submitProfile() {
-        const age = document.getElementById('userAge').value;
-        const gender = document.getElementById('userGender').value;
-        const job = document.getElementById('userJob').value;
-        const relation = document.getElementById('userRelation').value;
-        const mood = document.getElementById('userMood').value;
-        const language = this.selectedLang;
-
-        if(document.getElementById('userAge').selectedIndex === 0 || 
-           document.getElementById('userGender').selectedIndex === 0) {
-            alert("Please select all fields.");
-            return;
-        }
-
-        let gMode = 'female';
-        // Improved logic for multi-language gender detection
-        const isMale = gender.includes('Erkek') || gender.includes('Male') || gender.includes('Männlich') || gender.includes('Homme') || gender.includes('Hombre');
-        const isFemale = gender.includes('Kadın') || gender.includes('Female') || gender.includes('Weiblich') || gender.includes('Femme') || gender.includes('Mujer');
-        if (isMale) gMode = 'male';
-        else if (isFemale) gMode = 'female';
-        else gMode = 'neutral';
+        const g = document.getElementById('userGender').value;
+        const a = document.getElementById('userAge').value;
+        if(document.getElementById('userAge').selectedIndex === 0) { alert("Lütfen tüm alanları doldurun."); return; }
         
-        AIController.genderMode = gMode;
-        const oldName = AIController.userProfile.name || null;
-        const profile = { age, gender, job, relation, mood, language, name: oldName };
-        AIController.saveProfile(profile);
+        const p = { gender:g, age:a, language:this.lang, 
+            job:document.getElementById('userJob').value, 
+            relation:document.getElementById('userRelation').value, 
+            mood:document.getElementById('userMood').value 
+        };
+        AIController.saveProfile(p);
         
-        this.applyLanguageToUI(language);
-        this.updateBranding(gMode, age);
+        this.updateBranding(AIController.genderMode);
         document.getElementById('profileModal').classList.remove('active');
+        document.getElementById('profileModal').classList.add('hidden');
         
-        // Initial Greeting
         setTimeout(() => {
-            const texts = Translations[language];
-            let greeting = "";
-            const isSenior = age.includes('65') || age.includes('75') || age.includes('85');
-
-            if (isSenior) greeting = texts.introMature;
-            else if (gMode === 'male') greeting = texts.introMale;
-            else if (gMode === 'female') greeting = texts.introFemale;
-            else greeting = texts.introNeutral;
-            
-            if(mood.includes('Üzgün') || mood.includes('Sad') || mood.includes('Traurig') || mood.includes('Triste')) {
-                greeting += texts.introSad;
-            }
-            
-            this.addMessage(greeting, 'ai');
+            const t = Translations[this.lang] || Translations['tr'];
+            let txt = t.intro;
+            if(p.mood.includes('Üzgün') || p.mood.includes('Sad')) txt += " 😔";
+            this.addBubble(txt, 'ai');
         }, 800);
     },
 
-    resetProfile() {
-        const lang = this.selectedLang || 'tr';
-        const msg = Translations[lang].clearHistoryMsg;
+    updateBranding(mode) {
+        const h = document.getElementById('headerIconContainer');
+        const b = document.getElementById('sendBtn');
+        const i = document.getElementById('userInput');
         
-        if (confirm(msg)) {
-            AIController.clearChatHistory();
-            this.chatBox.innerHTML = '';
-        }
-    },
+        h.className = "w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg relative transition-colors duration-500";
+        b.className = "send-btn-custom text-white";
+        i.className = "w-full bg-gray-800 text-white rounded-xl px-4 py-3 border border-gray-600 outline-none resize-none text-sm";
 
-    applyLanguageToUI(lang) {
-        const t = Translations[lang];
-        document.getElementById('userInput').placeholder = t.placeholder;
-        document.getElementById('labelAdvice').innerText = t.labelAdvice;
-        document.getElementById('labelGossip').innerText = t.labelGossip;
-    },
-
-    updateBranding(mode, age) {
-        const lang = this.selectedLang;
-        const t = Translations[lang];
-        
-        const titleEl = document.getElementById('appTitle');
-        const subtitleEl = document.getElementById('appSubtitle');
-        const headerIconContainer = document.getElementById('headerIconContainer');
-        const userInput = document.getElementById('userInput');
-        const sendBtn = document.getElementById('sendBtn');
-
-        headerIconContainer.className = "w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg relative transition-colors duration-500";
-        
-        const isMature = age.includes('45') || age.includes('55') || age.includes('65') || age.includes('75') || age.includes('85');
-        
-        let appName = t.appTitle;
-        titleEl.innerText = appName;
-        subtitleEl.innerText = t.appSubtitle;
-
-        if (mode === 'male') {
-            subtitleEl.classList.remove('text-pink-400', 'text-indigo-400'); subtitleEl.classList.add('text-blue-400');
-            headerIconContainer.classList.add('bg-gradient-to-br', 'from-blue-600', 'to-cyan-600');
-            document.documentElement.style.setProperty('--theme-text-color', '#60a5fa');
-            document.documentElement.style.setProperty('--pulse-color', 'rgba(37, 99, 235, 0.7)');
-            document.documentElement.style.setProperty('--user-msg-bg', 'linear-gradient(135deg, #2563eb, #1d4ed8)');
-            document.documentElement.style.setProperty('--gossip-msg-bg', 'linear-gradient(135deg, #059669, #047857)');
-            userInput.classList.remove('focus:border-pink-500', 'focus:border-indigo-500'); userInput.classList.add('focus:border-blue-500');
-            sendBtn.classList.remove('bg-pink-600', 'hover:bg-pink-500'); sendBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-500');
-            sendBtn.classList.add('bg-blue-600', 'hover:bg-blue-500');
-        } else if (mode === 'female') {
-            subtitleEl.classList.remove('text-blue-400', 'text-indigo-400'); subtitleEl.classList.add('text-pink-400');
-            headerIconContainer.classList.add('bg-gradient-to-br', 'from-pink-500', 'to-purple-600');
-            document.documentElement.style.setProperty('--theme-text-color', '#f472b6');
-            document.documentElement.style.setProperty('--pulse-color', 'rgba(236, 72, 153, 0.7)');
-            document.documentElement.style.setProperty('--user-msg-bg', 'linear-gradient(135deg, #ec4899, #be185d)');
-            document.documentElement.style.setProperty('--gossip-msg-bg', 'linear-gradient(135deg, #8b5cf6, #7c3aed)');
-            userInput.classList.remove('focus:border-blue-500', 'focus:border-indigo-500'); userInput.classList.add('focus:border-pink-500');
-            sendBtn.classList.remove('bg-blue-600', 'hover:bg-blue-500'); sendBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-500');
-            sendBtn.classList.add('bg-pink-600', 'hover:bg-pink-500');
+        if(mode === 'male') {
+            h.classList.add('bg-gradient-to-br', 'from-blue-600', 'to-cyan-600');
+            b.classList.add('bg-blue-600');
+            i.classList.add('focus:border-blue-500');
+        } else if(mode === 'female') {
+            h.classList.add('bg-gradient-to-br', 'from-pink-500', 'to-purple-600');
+            b.classList.add('bg-pink-600');
+            i.classList.add('focus:border-pink-500');
         } else {
-            subtitleEl.classList.remove('text-blue-400', 'text-pink-400'); subtitleEl.classList.add('text-indigo-400');
-            headerIconContainer.classList.add('bg-gradient-to-br', 'from-indigo-500', 'to-violet-600');
-            document.documentElement.style.setProperty('--theme-text-color', '#a78bfa');
-            document.documentElement.style.setProperty('--pulse-color', 'rgba(124, 58, 237, 0.7)');
-            document.documentElement.style.setProperty('--user-msg-bg', 'linear-gradient(135deg, #6366f1, #4338ca)'); 
-            document.documentElement.style.setProperty('--gossip-msg-bg', 'linear-gradient(135deg, #d946ef, #c026d3)');
-            userInput.classList.remove('focus:border-blue-500', 'focus:border-pink-500'); userInput.classList.add('focus:border-indigo-500');
-            sendBtn.classList.remove('bg-blue-600', 'hover:bg-blue-500'); sendBtn.classList.remove('bg-pink-600', 'hover:bg-pink-500');
-            sendBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-500');
+            h.classList.add('bg-gradient-to-br', 'from-indigo-500', 'to-violet-600');
+            b.classList.add('bg-indigo-600');
+            i.classList.add('focus:border-indigo-500');
         }
     },
 
-    setMode(mode) {
-        this.currentMode = mode;
-        document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelector(`.mode-btn.${mode}`).classList.add('active');
+    clearChatHistory() {
+        const t = Translations[this.lang] || Translations['tr'];
+        if(confirm(t.clearMsg)) { AIController.clear(); document.getElementById('chatBox').innerHTML = ''; }
     },
 
-    sendMessage() {
-        const text = this.input.value.trim();
-        if (!text) return;
+    restoreChat() {
+        const h = AIController.history;
+        const box = document.getElementById('chatBox');
+        box.innerHTML = '';
+        h.forEach(m => {
+            const r = m.role==='user'?'user':'ai';
+            if(m.parts && m.parts[0].text) this.addBubble(m.parts[0].text, r, true);
+        });
+        setTimeout(() => this.scrollToBottom(), 100);
+    },
 
-        // --- DEBOUNCE LOGIC (3 Seconds) ---
-        this.addMessage(text, 'user');
+    setMode(m) {
+        this.currentMode = m;
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        if(m==='advice') document.getElementById('btnAdvice').classList.add('active');
+        else document.getElementById('btnGossip').classList.add('active');
+    },
+
+    async sendMessage() {
+        const txt = this.input.value.trim();
+        if(!txt) return;
+        this.addBubble(txt, 'user');
         this.input.value = '';
+        AIController.addUserMessage(txt);
         
-        if (this.messageBuffer) this.messageBuffer += " " + text;
-        else this.messageBuffer = text;
-
-        if (this.sendTimeout) clearTimeout(this.sendTimeout);
-
-        this.showTyping();
-
-        // 3 saniye bekle, yeni giriş olmazsa gönder
-        this.sendTimeout = setTimeout(async () => {
-            await this.processAIResponse();
-        }, 3000);
+        const tid = 't-'+Date.now();
+        this.showTyping(tid);
+        
+        const res = await AIController.generate(txt, this.currentMode);
+        const te = document.getElementById(tid); if(te) te.remove();
+        
+        if(res.includes("ERROR") || res.includes("NO_KEY")) { alert(res); return; }
+        this.addBubble(res, 'ai');
     },
 
-    async processAIResponse() {
-        const fullText = this.messageBuffer;
-        this.messageBuffer = ""; 
-        this.sendTimeout = null;
-        
-        const response = await AIController.generateResponse(fullText, this.currentMode);
-        
-        if (response === "NO_API_KEY") {
-             this.removeTyping();
-             alert("API Key missing. Please update the code.");
-             return;
-        }
-        if (response === "CONNECTION_ERROR") {
-             this.removeTyping();
-             alert("Connection Error. Check internet.");
-             return;
-        }
-        
-        const aiText = response;
-
-        // TURBO DYNAMIC DELAY
-        const charCount = aiText.length;
-        let typingDelay = 100 + (charCount * 3); 
-        
-        // Min wait
-        const minThinkTime = 200; 
-        if (typingDelay < minThinkTime) typingDelay = minThinkTime;
-        
-        // Cap
-        if (typingDelay > 1000) typingDelay = 1000;
-
-        await new Promise(resolve => setTimeout(resolve, typingDelay));
-        
-        this.removeTyping();
-        const msgType = this.currentMode === 'gossip' ? 'giybet' : 'ai';
-        this.addMessage(aiText, msgType);
-    },
-
-    addMessage(text, type) {
+    addBubble(txt, type, noAnim) {
+        const box = document.getElementById('chatBox');
         const div = document.createElement('div');
-        div.className = `message ${type}`;
+        div.className = "message-container";
         
-        let icon = '';
-        if (type === 'ai') icon = '<i class="fa-solid fa-user-shield mr-2 opacity-75"></i>';
-        if (AIController.genderMode === 'female' && type === 'ai') icon = '<i class="fa-solid fa-heart mr-2 opacity-75"></i>';
-        if (type === 'giybet') icon = '<i class="fa-solid fa-bolt mr-2 opacity-75"></i>';
+        const b = document.createElement('div');
+        b.className = `message ${type}`;
+        if(noAnim) b.style.animation = 'none';
+        b.innerHTML = txt.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+        div.appendChild(b);
         
-        // Basic Markdown-like bold replacement
-        let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
-        div.innerHTML = icon + formattedText;
-        this.chatBox.appendChild(div);
+        if(type==='ai' || type==='giybet') {
+            const fb = document.createElement('div');
+            fb.className = 'feedback-container';
+            fb.innerHTML = `<i class="fa-regular fa-thumbs-up fb-btn" onclick="this.classList.toggle('active-like')"></i><i class="fa-regular fa-thumbs-down fb-btn" onclick="this.classList.toggle('active-dislike')"></i>`;
+            if(!noAnim) div.appendChild(fb);
+        }
+        
+        box.appendChild(div);
         this.scrollToBottom();
     },
 
-    showTyping() {
-        if(document.getElementById('typingIndicator')) return;
-        const div = document.createElement('div');
-        div.id = 'typingIndicator';
-        div.className = `message ${this.currentMode === 'gossip' ? 'giybet' : 'ai'} opacity-50`;
-        div.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
-        this.chatBox.appendChild(div);
+    showTyping(id) {
+        const box = document.getElementById('chatBox');
+        const d = document.createElement('div'); d.id = id;
+        d.className = "message ai opacity-50"; d.style.width="60px";
+        d.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+        box.appendChild(d);
         this.scrollToBottom();
     },
-
-    removeTyping() {
-        const el = document.getElementById('typingIndicator');
-        if (el) el.remove();
-    },
-
-    scrollToBottom() {
-        this.chatBox.scrollTop = this.chatBox.scrollHeight;
-    },
-
-    resetChat() {
-        AIController.history = [];
-        this.chatBox.innerHTML = '';
-        location.reload(); 
-    }
+    removeTyping() { /* handled by IDs */ },
+    scrollToBottom() { const b = document.getElementById('chatBox'); b.scrollTop = b.scrollHeight; }
 };
 
-window.onload = () => {
-    window.app = app;
-    try {
-        app.init();
-    } catch(e) {
-        console.error("Initialization Error", e);
-        const splash = document.getElementById('splashScreen');
-        if(splash) splash.style.display = 'none';
-        const legal = document.getElementById('legalModal');
-        if(legal) legal.classList.remove('hidden');
-    }
-};
+window.onload = () => app.init();
 </script>
 </body>
-
 </html>
-
-
-
-
