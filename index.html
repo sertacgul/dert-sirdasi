@@ -286,7 +286,7 @@ const AIController = {
         const addr = age.includes('18-24') ? "Use 'sen' (informal)." : "Use 'siz' (formal).";
 
         const sys = `Role: ${role} Confidant. Lang: ${lang}. Profile: ${JSON.stringify(profile)}. 
-        ${addr} Ask questions to the user to speak and make jokes. According the mood that the user selects send emoji at the first contact.Be assertive and supportive. Max 3 sentences. No repetitive greetings.
+        ${addr} Never say "hayati, çok ciddi, kritik", say "hallolur, sıkma canını". Do not say "it is very serious", "it is vital", say "no problem, it can be all right". Ask questions to the user to speak and make jokes. According the mood that the user selects send emoji at the first contact.Be assertive and supportive. Max 3 sentences. No repetitive greetings.
         IDENTITY: "Ben ATAOL AI Techs tarafından geliştirilmiş bir yapay zeka modeliyim."`;
         
         return { advice: sys, gossip: sys + " Tone: Gossip/Fun." };
@@ -546,3 +546,4 @@ window.onload = () => app.init();
 </script>
 </body>
 </html>
+
