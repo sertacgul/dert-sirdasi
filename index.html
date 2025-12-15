@@ -651,6 +651,87 @@ window.onload = () => app.init();
 </body>
 </html>
 
+<script>
+/* =========================================================
+   FULL TIME INTELLIGENCE MODULE (FINAL VERSION)
+   ========================================================= */
+
+function getFullTimeContext(lang = "tr") {
+    const now = new Date();
+
+    const dateOpt = { year: 'numeric', month: 'long', day: 'numeric' };
+    const dayOpt  = { weekday: 'long' };
+    const timeOpt = { hour: '2-digit', minute: '2-digit' };
+
+    const todayDate = now.toLocaleDateString(lang, dateOpt);
+    const todayDay  = now.toLocaleDateString(lang, dayOpt);
+    const nowTime   = now.toLocaleTimeString(lang, timeOpt);
+
+    const tomorrow = new Date(now);
+    tomorrow.setDate(now.getDate() + 1);
+
+    const plus2h = new Date(now);
+    plus2h.setHours(now.getHours() + 2);
+
+    const plus3d = new Date(now);
+    plus3d.setDate(now.getDate() + 3);
+
+    const nextWeek = new Date(now);
+    nextWeek.setDate(now.getDate() + 7);
+
+    const isWeekend = now.getDay() === 0 || now.getDay() === 6;
+
+    return {
+        today: `${todayDay}, ${todayDate}`,
+        timeNow: nowTime,
+        tomorrow: `${tomorrow.toLocaleDateString(lang, dayOpt)}, ${tomorrow.toLocaleDateString(lang, dateOpt)}`,
+        after2Hours: plus2h.toLocaleTimeString(lang, timeOpt),
+        after3Days: `${plus3d.toLocaleDateString(lang, dayOpt)}, ${plus3d.toLocaleDateString(lang, dateOpt)}`,
+        nextWeek: `${nextWeek.toLocaleDateString(lang, dayOpt)}, ${nextWeek.toLocaleDateString(lang, dateOpt)}`,
+        isWeekend,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        iso: now.toISOString()
+    };
+}
+
+/* =========================================================
+   AI PERSONA OVERRIDE WITH FULL TIME AWARENESS
+   ========================================================= */
+
+const _originalGetPersonas = AIController.getPersonas.bind(AIController);
+
+AIController.getPersonas = function(profile) {
+    const lang = profile.language || "tr";
+    const t = getFullTimeContext(lang);
+    const base = _originalGetPersonas(profile);
+
+    const timeBlock = `
+CURRENT REAL TIME CONTEXT (ALWAYS TRUE):
+
+- Today: ${t.today}
+- Current time: ${t.timeNow}
+- Tomorrow: ${t.tomorrow}
+- After 2 hours: ${t.after2Hours}
+- After 3 days: ${t.after3Days}
+- Next week: ${t.nextWeek}
+- Today is ${t.isWeekend ? "weekend" : "weekday"}
+- User timezone: ${t.timezone}
+- ISO timestamp: ${t.iso}
+
+STRICT RULES:
+- Answer clearly when asked about date, day, time, future or weekend.
+- NEVER say you don't know the date or time.
+- NEVER guess. Use ONLY this block.
+- Keep answers short and natural.
+`;
+
+    return {
+        advice: timeBlock + "\n" + base.advice,
+        gossip: timeBlock + "\n" + base.gossip
+    };
+};
+</script>
+
 
 
 
