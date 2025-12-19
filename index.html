@@ -1,135 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Soul Confidant</title>
 
-<meta name="theme-color" content="#111827">
-<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="theme-color" content="#111827" />
+
+<link rel="apple-touch-icon" href="./icon-180.png" />
 
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 
 <style>
-body{font-family:'Nunito',sans-serif;background:#111827;color:#e5e7eb;margin:0}
-.app{max-width:600px;margin:auto;height:100vh;display:flex;flex-direction:column}
-header{padding:16px;background:#0f172a;border-bottom:1px solid #374151}
-.chat{flex:1;overflow-y:auto;padding:16px}
-.msg{max-width:85%;padding:12px 16px;border-radius:18px;margin-bottom:12px}
-.user{background:#ec4899;color:white;margin-left:auto}
-.ai{background:#334155}
-footer{padding:12px;border-top:1px solid #374151;background:#0f172a;display:flex;gap:8px}
-textarea{flex:1;background:#1f2937;border:1px solid #374151;border-radius:12px;padding:10px;color:white}
-button{background:#ec4899;color:white;border:none;border-radius:12px;padding:0 18px}
+body {
+  margin: 0;
+  background: #0f172a;
+  color: #e5e7eb;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+}
+.chat {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: auto;
+}
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+.msg {
+  max-width: 80%;
+  margin-bottom: 12px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  line-height: 1.4;
+}
+.user {
+  background: #2563eb;
+  margin-left: auto;
+  border-bottom-right-radius: 4px;
+}
+.ai {
+  background: #334155;
+  border-bottom-left-radius: 4px;
+}
+.input {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid #334155;
+}
+textarea {
+  flex: 1;
+  background: #020617;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 10px;
+  color: white;
+  resize: none;
+}
+button {
+  background: #22c55e;
+  border-radius: 12px;
+  padding: 0 16px;
+}
 </style>
 </head>
 
 <body>
-<div class="app">
-<header>
-<h1 class="text-xl font-bold">Soul Confidant</h1>
-<p class="text-xs text-pink-400">A safe place to talk</p>
-</header>
+<div class="chat">
+  <div id="messages" class="messages"></div>
 
-<div id="chat" class="chat"></div>
-
-<footer>
-<textarea id="input" rows="2" placeholder="Type here..."></textarea>
-<button onclick="send()">Send</button>
-</footer>
+  <div class="input">
+    <textarea id="input" rows="2" placeholder="Tell me what's on your mind..."></textarea>
+    <button onclick="send()"><i class="fa fa-paper-plane"></i></button>
+  </div>
 </div>
 
 <script>
-/* =========================
-   DAILY FOLLOW-UP MEMORY
-   ========================= */
+const API_ENDPOINT = "https://dert-sirdasi-api.captsertacgul.workers.dev/chat";
 
-const STORAGE_KEY = "sc_last_session";
+const messagesEl = document.getElementById("messages");
+const inputEl = document.getElementById("input");
 
-function checkDailyFollowUp() {
-  const last = localStorage.getItem(STORAGE_KEY);
-  if (!last) return;
-
-  const lastDate = new Date(JSON.parse(last).date);
-  const today = new Date();
-
-  lastDate.setHours(0,0,0,0);
-  today.setHours(0,0,0,0);
-
-  const diff = (today - lastDate) / (1000 * 60 * 60 * 24);
-
-  if (diff >= 1) {
-    addAI("Yesterday you shared something important. How is it going today? Did it improve or is it still bothering you?");
-  }
+function addMessage(text, who) {
+  const div = document.createElement("div");
+  div.className = `msg ${who}`;
+  div.innerText = text;
+  messagesEl.appendChild(div);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
-function saveSession() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({
-    date: new Date().toISOString()
-  }));
-}
+async function send() {
+  const text = inputEl.value.trim();
+  if (!text) return;
 
-/* =========================
-   CHAT UI
-   ========================= */
+  addMessage(text, "user");
+  inputEl.value = "";
 
-const chat = document.getElementById("chat");
-
-function addUser(text){
-  const d=document.createElement("div");
-  d.className="msg user";
-  d.innerText=text;
-  chat.appendChild(d);
-  chat.scrollTop=chat.scrollHeight;
-}
-
-function addAI(text){
-  const d=document.createElement("div");
-  d.className="msg ai";
-  d.innerText=text;
-  chat.appendChild(d);
-  chat.scrollTop=chat.scrollHeight;
-}
-
-/* =========================
-   BACKEND CALL
-   ========================= */
-
-async function send(){
-  const input=document.getElementById("input");
-  const text=input.value.trim();
-  if(!text) return;
-
-  addUser(text);
-  input.value="";
-  saveSession();
-
-  try{
-    const res=await fetch("https://dert-sirdasi-api.captsertacgul.workers.dev",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({message:text})
+  try {
+    const res = await fetch(API_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text })
     });
-    const data=await res.json();
-    addAI(data.reply || "I'm here with you.");
-  }catch{
-    addAI("I couldn't reach the server, but I'm still listening.");
+
+    const data = await res.json();
+    addMessage(data.reply || "…", "ai");
+  } catch {
+    addMessage("Connection problem. Please try again.", "ai");
   }
 }
 
-/* =========================
-   INIT
-   ========================= */
-
-window.onload=()=>{
-  checkDailyFollowUp();
-  if(chat.children.length===0){
-    addAI("Hello. I'm here for you. Tell me what's on your mind.");
-  }
+window.onload = () => {
+  addMessage(
+    "Hi, I'm your Soul Confidant. You can talk freely here. 🌿",
+    "ai"
+  );
 };
 </script>
 </body>
 </html>
-
