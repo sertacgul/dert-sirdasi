@@ -524,6 +524,41 @@
       },
 
       // Backend çağrısı
+      const res = await AIController.generate(txt, app.currentMode);
+      <script>
+const API_ENDPOINT = "https://dert-sirdasi-api.captsertacgul.workers.dev";
+
+const AIController = {
+  history: [],
+
+  async generate(message, mode = "advice") {
+    try {
+      const res = await fetch(API_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message,
+          mode
+        })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        return data.reply || "Sunucu hatası oluştu.";
+      }
+
+      return data.reply;
+
+    } catch (err) {
+      return "Sunucuya bağlanamadım. Tekrar dener misin?";
+    }
+  }
+};
+</script>
+
       async generate(message, mode) {
         // ekstra alanlar backend görmezden gelebilir
         const body = {
@@ -916,3 +951,4 @@
   </script>
 </body>
 </html>
+
