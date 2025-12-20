@@ -704,6 +704,18 @@ IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Te
               }
             } catch(e){}
           }, 800);
+          try {
+            const f = JSON.parse(localStorage.getItem("ds_followup"));
+            if(f){
+              const y = new Date();
+              y.setDate(y.getDate()-1);
+              const yISO = y.toISOString().slice(0,10);
+              if(f.date === yISO){
+                this.addBubble(Translations[this.lang].followup, "ai");
+              }
+            }
+          } catch(e){}
+      localStorage.removeItem("ds_followup");
 
 
           // Dün hatırlatma (legal kabul sonrası)
@@ -983,4 +995,5 @@ STRICT RULES:
   </script>
 </body>
 </html>
+
 
