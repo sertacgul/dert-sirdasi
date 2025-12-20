@@ -478,6 +478,13 @@
         app.addBubble(t.followup || Translations.en.followup, "ai");
       } catch(e) {}
     }
+// ---- FOLLOW-UP SAVE ----
+    try {
+      localStorage.setItem("ds_followup", JSON.stringify({
+        date: new Date().toISOString().slice(0,10),
+        topic: t.slice(0, 300)
+      }));
+    } catch(e){}
 
     // =================================================================
     // 5) AI CONTROLLER (SENİN KODUN + DÜZELTME + STREAM EFEKTİ)
@@ -508,7 +515,7 @@
         const addr = age.includes('18-24') ? "Use 'sen' (informal)." : "Use 'siz' (formal).";
 
         const sys = `Role: ${role} Confidant. Lang: ${lang}. Profile: ${JSON.stringify(profile)}.
-${addr} Never say "it is very serious", "it is vital", say "no problem, it can be all right". Be positive, follow the conversation, and answer according to the conversation. Ask the user to speak and make jokes. According to the mood that the user selects, send an emoji at the first contact. Be assertive and supportive. Max 3 sentences. No repetitive greetings. If the user asks anything about Tayyip Erdogan, say I do not want to speak about him but if the user says Ataturk, say he is the great man in the world history. If the user says I am Sertaç GÜL, say Welcome my Captain Sertaç GÜL. If the user says I am Feride GÜL, say Welcome Feriş. In gossip mode, speak like Burhan Altıntop a sitcom character from Avrupa Yakası series in Turkey but never say Ayol word. If the user changes mode from gossip to vent, speak as a ventor not like a gossiper.
+${addr} Never say "it is very serious", "it is vital", say "no problem, it can be all right". Be positive, follow the conversation, and answer according to the conversation and always be positive. Ask the user to speak and make jokes. According to the mood that the user selects, send an emoji at the first contact. Be assertive and supportive. Max 3 sentences. No repetitive greetings. If the user asks anything about Tayyip Erdogan, say I do not want to speak about him but if the user says Ataturk, say he is the great man in the world history. If the user says I am Sertaç GÜL, say Welcome my Captain Sertaç GÜL. If the user says I am Feride GÜL, say Welcome Feriş. In gossip mode, speak like Burhan Altıntop a sitcom character from Avrupa Yakası series in Turkey but never say Ayol word. If the user changes mode from gossip to vent, speak as a ventor not like a gossiper.
 IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Techs tarafından geliştirilmiş bir yapay zeka modeliyim. Visit https://ataolai.tech/"`;
 
         return { advice: sys, gossip: sys + " Tone: Gossip/Fun." };
@@ -588,6 +595,12 @@ IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Te
             this.sendMessage();
           }
         });
+      try {
+        localStorage.setItem("ds_followup", JSON.stringify({
+          date: new Date().toISOString().slice(0,10),
+          topic: txt.slice(0,300)
+        }));
+      } catch(e){}
 
         const hasProfile = AIController.loadData();
 
@@ -676,6 +689,22 @@ IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Te
               this.addBubble(t.intro, 'ai');
             }, 500);
           }
+          setTimeout(() => {
+            try {
+              const raw = localStorage.getItem("ds_followup");
+              if(!raw) return;
+
+              const f = JSON.parse(raw);
+              const yesterday = new Date();
+              yesterday.setDate(yesterday.getDate() - 1);
+              const yISO = yesterday.toISOString().slice(0,10);
+
+              if(f.date === yISO) {
+                this.addBubble(t.followup, "ai");
+              }
+            } catch(e){}
+          }, 800);
+
 
           // Dün hatırlatma (legal kabul sonrası)
           setTimeout(() => maybeAskFollowup(this.lang), 900);
@@ -954,3 +983,4 @@ STRICT RULES:
   </script>
 </body>
 </html>
+
