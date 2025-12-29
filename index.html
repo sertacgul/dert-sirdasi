@@ -14,9 +14,6 @@
 
   <!-- Icons -->
   <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png">
-  <link rel="apple-touch-icon" sizes="167x167" href="./icon-167.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="./icon-152.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="./icon-120.png">
   <link rel="apple-touch-icon" href="./icon-180.png">
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -178,7 +175,7 @@
       </div>
     </div>
 
-    <!-- PROFILE MODAL (APPLE İÇİN GÜNCELLENDİ) -->
+    <!-- PROFILE MODAL (APPLE İÇİN GÜNCELLENDİ: ARTIK ZORUNLU DEĞİL) -->
     <div id="profileModal" class="modal-overlay">
       <div class="w-full max-w-sm mx-auto">
         <div class="text-center mb-6">
@@ -188,6 +185,7 @@
           <h2 id="profileTitle" class="text-xl font-bold text-white">Seni Tanıyalım</h2>
           <p id="profileSubtitle" class="text-gray-400 text-xs mt-1">Yargısız, güvenli dert ortağın.</p>
         </div>
+        <!-- required etiketleri kaldırıldı, form doğrulama esnetildi -->
         <form onsubmit="event.preventDefault(); app.submitProfile();">
           <select id="userGender" class="form-select" onchange="app.handleGenderChange(this.value)"></select>
           <select id="userAge" class="form-select"></select>
@@ -200,7 +198,7 @@
             Başla
           </button>
           
-          <!-- YENİ: SKIP (ATLA) BUTONU -->
+          <!-- ATLA (SKIP) BUTONU -->
           <button type="button" id="skipBtn" onclick="app.skipProfile()"
             class="w-full bg-transparent border border-gray-600 text-gray-400 font-medium py-2 rounded-xl mt-3 hover:text-white hover:border-gray-400 transition text-sm">
             Şimdilik Atla (Anonim)
@@ -209,7 +207,7 @@
       </div>
     </div>
 
-    <!-- APP HEADER (GÜNCELLENDİ: IPAD PROOF TRASH ICON) -->
+    <!-- APP HEADER (GÜNCELLENDİ: TRASH ICON) -->
     <header class="p-4 flex items-center justify-between border-b border-gray-700 bg-gray-900 z-10">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-full header-icon-bg flex items-center justify-center text-white font-bold text-lg transition-colors duration-500">
@@ -220,14 +218,7 @@
           <span id="appSubtitle" class="text-xs text-pink-400">Good to talk with you</span>
         </div>
       </div>
-      
-      <!-- 
-        TRASH ICON: iPad Korumalı Versiyon
-        - w-12 h-12 (48px): Geniş dokunmatik alan
-        - active:scale-90: Basıldığında görsel tepki (feedback) verir
-        - mr-1: Sağ kenardan hafif boşluk
-        - cursor-pointer: Mouse ile kullanıldığında el işareti
-      -->
+      <!-- TRASH ICON: Geniş Tıklama Alanı + Z-Index -->
       <button onclick="app.clearChatHistory()"
         class="w-12 h-12 rounded-full border border-gray-600 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-800 active:scale-90 active:bg-red-900 active:text-white transition-all duration-150 mr-1 cursor-pointer z-50">
         <i class="fa-solid fa-trash-can text-lg"></i>
@@ -313,7 +304,7 @@
     };
 
     // =================================================================
-    // TRANSLATIONS (GÜNCELLENDİ: SKIP + CLEAR)
+    // TRANSLATIONS (GÜNCELLENDİ: Opsiyonel Seçenekler + Skip)
     // =================================================================
     const Translations = {
       tr: {
@@ -323,11 +314,12 @@
         legalBtn: "Kabul Ediyorum", clearMsg: "Sohbet geçmişi silinsin mi?", intro: "Merhaba, seni dinliyorum.",
         followup: "Dün konuştuğumuz konu ne durumda? İstersen kaldığımız yerden devam edelim.",
         profileTitle: "Seni Tanıyalım", profileSubtitle: "Yargısız, güvenli dert ortağın.", startBtn: "Başla", skipBtn: "Şimdilik Atla",
-        gender: ["Cinsiyet", "Kadın", "Erkek", "Belirtme"],
-        age: ["Yaş", "18-24", "25-34", "35-44", "45-54", "55-64", "65-75", "75+"],
-        job: ["Meslek", "Öğrenci", "Çalışan", "Ev Hanımı", "İşsiz", "Emekli"],
-        relation: ["İlişki", "Bekar", "İlişkisi Var", "Evli", "Karmaşık"],
-        mood: ["Ruh halin nasıl?", "Mutlu", "Üzgün", "Kızgın", "Yorgun", "Nötr"]
+        // Apple için opsiyonel yaptık
+        gender: ["Cinsiyet (Opsiyonel)", "Kadın", "Erkek", "Belirtmek İstemiyorum"],
+        age: ["Yaş (Opsiyonel)", "Belirtmek İstemiyorum", "18-24", "25-34", "35-44", "45-54", "55-64", "65-75", "75+"],
+        job: ["Meslek (Opsiyonel)", "Belirtmek İstemiyorum", "Öğrenci", "Çalışan", "Ev Hanımı", "İşsiz", "Emekli"],
+        relation: ["İlişki (Opsiyonel)", "Belirtmek İstemiyorum", "Bekar", "İlişkisi Var", "Evli", "Karmaşık"],
+        mood: ["Ruh halin nasıl? (Opsiyonel)", "Nötr", "Mutlu", "Üzgün", "Kızgın", "Yorgun"]
       },
       en: {
         appTitle: "Soul Confidant", appSubtitle: "Good to talk", labelAdvice: "Vent", labelGossip: "Gossip", placeholder: "Type here...",
@@ -336,13 +328,13 @@
         legalBtn: "I Accept", clearMsg: "Clear history?", intro: "Hello, I'm listening.",
         followup: "How did things go with what you shared yesterday? Want to continue from there?",
         profileTitle: "Let's Know You", profileSubtitle: "Safe space.", startBtn: "Start", skipBtn: "Skip (Anonymous)",
-        gender: ["Gender", "Female", "Male", "N/A"],
-        age: ["Age", "18-24", "25-34", "35-44", "45-54", "55-64", "65-75", "75+"],
-        job: ["Job?", "Student", "Worker", "Homemaker", "Unemployed", "Retired"],
-        relation: ["Status?", "Single", "Taken", "Married", "Complicated"],
-        mood: ["Mood?", "Happy", "Sad", "Angry", "Tired", "Neutral"]
+        gender: ["Gender (Optional)", "Female", "Male", "Prefer not to say"],
+        age: ["Age (Optional)", "Prefer not to say", "18-24", "25-34", "35-44", "45-54", "55-64", "65-75", "75+"],
+        job: ["Job (Optional)", "Prefer not to say", "Student", "Worker", "Homemaker", "Unemployed", "Retired"],
+        relation: ["Status (Optional)", "Prefer not to say", "Single", "Taken", "Married", "Complicated"],
+        mood: ["Mood (Optional)", "Neutral", "Happy", "Sad", "Angry", "Tired"]
       },
-      // ... Diğer diller varsayılan olarak İngilizce dönecektir
+      // ... Diğer diller de varsayılan olarak İngilizce dönecektir
     };
 
     // =================================================================
@@ -486,7 +478,6 @@ IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Te
         const sb = document.getElementById('startBtn');
         if (sb) sb.innerHTML = `${t.startBtn} <i class="fa-solid fa-arrow-right ml-2"></i>`;
         
-        // --- YENİ: SKIP BUTONU METNİ ---
         const skb = document.getElementById('skipBtn');
         if (skb) skb.innerText = t.skipBtn || "Skip (Anonymous)";
 
@@ -514,7 +505,8 @@ IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Te
         opts.forEach((o, i) => {
           const op = document.createElement('option');
           op.value = o; op.innerText = o;
-          if (i === 0) { op.disabled = true; op.selected = true; }
+          // APPLE FIX: İlk seçenek (Seçiniz) artık disabled değil, seçilebilir (opsiyonel)
+          if (i === 0) { op.selected = true; }
           sel.add(op);
         });
         if (prev && opts.includes(prev)) sel.value = prev;
@@ -525,7 +517,6 @@ IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Te
         document.getElementById('legalModal').classList.remove('active');
 
         if (AIController.userProfile && AIController.userProfile.age) {
-          // Mevcut kullanıcı
           AIController.userProfile.language = this.lang;
           AIController.saveProfile(AIController.userProfile);
           this.updateLang(this.lang);
@@ -539,7 +530,6 @@ IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Te
             }, 500);
           }
         } else {
-          // Yeni kullanıcı -> Profil Modal'ı Aç
           this.updateLang(this.lang);
           document.getElementById('profileModal').classList.add('active');
         }
@@ -571,45 +561,40 @@ IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Te
         }
       },
 
+      // APPLE FIX: ZORUNLULUK KALDIRILDI
       submitProfile() {
-        const g = document.getElementById('userGender').value;
-        const a = document.getElementById('userAge').value;
-        if (document.getElementById('userAge').selectedIndex === 0) { alert("Lütfen seçiniz"); return; }
+        const gender = document.getElementById('userGender').value;
+        const age = document.getElementById('userAge').value;
+        
+        // Yaş kontrolünü kaldırdık. Kullanıcı "Seçiniz" dese bile geçer.
+        // Varsayılan değerler atanır.
 
-        const p = {
-          gender: g, age: a, language: this.lang,
-          job: document.getElementById('userJob').value,
-          relation: document.getElementById('userRelation').value,
-          mood: document.getElementById('userMood').value
+        this.userProfile = {
+            gender: gender || 'N/A', 
+            age: age || 'Unknown', 
+            language: this.lang,
+            job: document.getElementById('userJob').value || 'Unknown',
+            relation: document.getElementById('userRelation').value || 'Unknown',
+            mood: document.getElementById('userMood').value || 'Neutral'
         };
-        AIController.saveProfile(p);
-
-        this.updateTheme(g);
+        
+        AIController.saveProfile(this.userProfile);
+        this.updateTheme(gender);
         document.getElementById('profileModal').classList.remove('active');
 
         setTimeout(() => {
           const t = Translations[this.lang] || Translations['en'];
           let txt = t.intro;
-          if (p.mood) {
-            const ml = p.mood.toLowerCase();
-            if (ml.includes('üzgün') || ml.includes('sad')) txt += " 😔";
-            else if (ml.includes('mutlu') || ml.includes('happy')) txt += " 😃";
-            else if (ml.includes('kızgın') || ml.includes('angry')) txt += " 😡";
-          }
           this.addBubble(txt, 'ai');
         }, 800);
       },
 
-      // --- YENİ: SKIP FONKSİYONU ---
       skipProfile() {
-        // Anonim profil oluştur
-        const p = {
-          gender: 'N/A', age: '18+', language: this.lang,
-          job: 'Unknown', relation: 'Unknown', mood: 'Neutral'
+        this.userProfile = {
+            gender: 'N/A', age: '18+', language: this.lang,
+            job: 'Unknown', relation: 'Unknown', mood: 'Neutral'
         };
-        AIController.saveProfile(p);
-        
-        // Temayı varsayılana çek
+        AIController.saveProfile(this.userProfile);
         document.body.classList.remove('theme-male');
         AIController.genderMode = 'neutral';
 
@@ -621,7 +606,6 @@ IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Te
         }, 500);
       },
 
-      // --- YENİ: ÇÖP KUTUSU ONAYLI ---
       clearChatHistory() {
         const t = Translations[this.lang] || Translations['en'];
         if (confirm(t.clearMsg)) { 
@@ -644,14 +628,13 @@ IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Te
       setMode(m) {
         app.currentMode = m;
         document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-        const btn = document.querySelector(`.mode-btn.${m}`);
+        const btn = document.querySelector(`.mode-btn.${m === 'advice' ? 'advice' : 'gossip'}`);
         if (btn) btn.classList.add('active');
         
-        // Renk değişimi
         if (m === 'advice') {
             document.documentElement.style.setProperty('--btn-bg', '#ec4899'); // Pink
         } else {
-            document.documentElement.style.setProperty('--btn-bg', '#4c1d95'); // Purple for Gossip
+            document.documentElement.style.setProperty('--btn-bg', '#4c1d95'); // Purple
         }
       },
 
