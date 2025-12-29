@@ -240,7 +240,7 @@
       </div>
     </div>
 
-    <!-- PROFILE MODAL -->
+    <!-- PROFILE MODAL (GÜNCELLENDİ: SKIP BUTTON) -->
     <div id="profileModal" class="modal-overlay">
       <div class="w-full max-w-sm mx-auto">
         <div class="text-center mb-6">
@@ -260,11 +260,17 @@
             class="w-full bg-gradient-to-r from-pink-600 to-purple-600 text-white font-bold py-3 rounded-xl mt-4 shadow-lg transform active:scale-95 transition">
             Başla
           </button>
+          
+          <!-- APPLE İÇİN EKLENEN ATLA BUTONU -->
+          <button type="button" id="skipBtn" onclick="app.skipProfile()"
+            class="w-full bg-transparent text-gray-400 font-medium py-2 rounded-xl mt-2 hover:text-white transition text-sm">
+            Şimdilik Atla (Anonim)
+          </button>
         </form>
       </div>
     </div>
 
-    <!-- APP HEADER -->
+    <!-- APP HEADER (GÜNCELLENDİ: TRASH ICON) -->
     <header class="p-4 flex items-center justify-between border-b border-gray-700 bg-gray-900 z-10">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-full header-icon-bg flex items-center justify-center text-white font-bold text-lg transition-colors duration-500">
@@ -272,12 +278,13 @@
         </div>
         <div>
           <h1 id="appTitle" class="font-bold text-white">Soul Confidant</h1>
-          <span id="appSubtitle" class="text-xs text-pink-400">Seninle konuşmak iyi gelecek</span>
+          <span id="appSubtitle" class="text-xs text-pink-400">Good to talk with you</span>
         </div>
       </div>
+      <!-- Trash Icon: Hit area increased, z-index added for iPad touches -->
       <button onclick="app.clearChatHistory()"
-        class="w-10 h-10 rounded-full border border-gray-600 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-800 transition">
-        <i class="fa-solid fa-trash-can"></i>
+        class="w-12 h-12 rounded-full border border-gray-600 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-800 transition z-50">
+        <i class="fa-solid fa-trash-can text-lg"></i>
       </button>
     </header>
 
@@ -308,14 +315,14 @@
 
   <script>
     // =================================================================
-    // 1) API KEY CONFIGURATION (SENİN KODUN - DEĞİŞTİRME)
+    // 1) API KEY CONFIGURATION (KORUNDU)
     // =================================================================
     const partA = "AIzaSyDZQttGiJrIPow";
     const partB = "g9y4sBCXx_yYBmNQM0m8";
     const apiKey = partA + partB;
 
     // =================================================================
-    // 2) VISUAL CANVAS EFFECT (SENİN KODUN)
+    // 2) VISUAL CANVAS EFFECT (KORUNDU)
     // =================================================================
     const CanvasEffect = {
       canvas: null, ctx: null, particles: [], animationId: null,
@@ -360,7 +367,7 @@
     };
 
     // =================================================================
-    // 3) TRANSLATIONS (SENİN KODUN + FOLLOWUP EKİ)
+    // 3) TRANSLATIONS (GÜNCELLENDİ: SKIP BTN EKLENDİ)
     // =================================================================
     const Translations = {
       tr: {
@@ -369,7 +376,7 @@
         legalText: "<ul><li><strong>1. Yaş Sınırı:</strong> 18+ yaş gereklidir.</li><li><strong>2. Sorumluluk Reddi:</strong> Yapay zeka simülasyonudur.</li><li><strong>3. Etik:</strong> Saygılı dil kullanınız.</li><li><strong>4. Gizlilik:</strong> Veriler cihazınızda saklanır.</li><li><strong>5. Rıza:</strong> Kullanarak şartları kabul edersiniz.</li></ul>",
         legalBtn: "Kabul Ediyorum", clearMsg: "Sohbet geçmişi silinsin mi?", intro: "Merhaba, seni dinliyorum.",
         followup: "Dün konuştuğumuz konu ne durumda? İstersen kaldığımız yerden devam edelim.",
-        profileTitle: "Seni Tanıyalım", profileSubtitle: "Yargısız, güvenli dert ortağın.", startBtn: "Başla",
+        profileTitle: "Seni Tanıyalım", profileSubtitle: "Yargısız, güvenli dert ortağın.", startBtn: "Başla", skipBtn: "Şimdilik Atla",
         gender: ["Cinsiyet", "Kadın", "Erkek", "Belirtme"],
         age: ["Yaş", "18-24", "25-34", "35-44", "45-54", "55-64", "65-75", "75+"],
         job: ["Meslek", "Öğrenci", "Çalışan", "Ev Hanımı", "İşsiz", "Emekli"],
@@ -382,7 +389,7 @@
         legalText: "<ul><li><strong>1. Age Limit:</strong> 18+ required.</li><li><strong>2. Disclaimer:</strong> AI simulation.</li><li><strong>3. Ethics:</strong> Respectful language only.</li><li><strong>4. Privacy:</strong> Local data storage.</li><li><strong>5. Consent:</strong> By using, you accept terms.</li></ul>",
         legalBtn: "I Accept", clearMsg: "Clear history?", intro: "Hello, I'm listening.",
         followup: "How did things go with what you shared yesterday? Want to continue from there?",
-        profileTitle: "Let's Know You", profileSubtitle: "Safe space.", startBtn: "Start",
+        profileTitle: "Let's Know You", profileSubtitle: "Safe space.", startBtn: "Start", skipBtn: "Skip",
         gender: ["Gender", "Female", "Male", "N/A"],
         age: ["Age", "18-24", "25-34", "35-44", "45-54", "55-64", "65-75", "75+"],
         job: ["Job?", "Student", "Worker", "Homemaker", "Unemployed", "Retired"],
@@ -392,63 +399,63 @@
       de: { appTitle:"Seelenverwandter", appSubtitle:"Es tut gut zu reden", labelAdvice:"Reden", labelGossip:"Klatsch", placeholder:"Schreiben...", legalTitle:"Rechtlicher Hinweis",
         legalText:"<ul><li><strong>1. Altersgrenze:</strong> Teilnahme ab 18 Jahren.</li><li><strong>2. Haftungsausschluss:</strong> KI-Simulation.</li><li><strong>3. Ethik:</strong> Respektvolle Sprache.</li><li><strong>4. Sicherheit:</strong> Daten lokal.</li><li><strong>5. Zustimmung:</strong> Nutzung = Zustimmung.</li></ul>",
         legalBtn:"Ich stimme zu", clearMsg:"Soll der Chatverlauf gelöscht werden?", intro:"Hallo, ich höre zu.",
-        followup:"Wie ist es mit dem Thema von gestern gelaufen?", profileTitle:"Dich Kennenlernen", profileSubtitle:"Sicherer Raum.", startBtn:"Starten",
+        followup:"Wie ist es mit dem Thema von gestern gelaufen?", profileTitle:"Dich Kennenlernen", profileSubtitle:"Sicherer Raum.", startBtn:"Starten", skipBtn: "Überspringen",
         gender:["Geschlecht","Weiblich","Männlich","k.A."], age:["Alter","18-24","25-34","35-44","45-54","55-64","65-75","75+"],
         job:["Beruf?","Student","Arbeit","Hausfrau","Arbeitslos","Rentner"], relation:["Status?","Single","Beziehung","Verheiratet","Kompliziert"], mood:["Laune?","Gut","Schlecht","Wütend","Müde","Neutral"]
       },
       fr: { appTitle:"Confident", appSubtitle:"Parler fait du bien", labelAdvice:"Confier", labelGossip:"Potins", placeholder:"Écrivez...", legalTitle:"Avis Légal",
         legalText:"<ul><li><strong>1. Limite d'âge:</strong> 18+.</li><li><strong>2. Clause:</strong> Simulation IA.</li><li><strong>3. Éthique:</strong> Langage respectueux.</li><li><strong>4. Confidentialité:</strong> Données locales.</li><li><strong>5. Consentement:</strong> Usage = accord.</li></ul>",
         legalBtn:"Je suis d'accord", clearMsg:"Faut-il supprimer l'historique des conversations ?", intro:"Bonjour, je vous écoute.",
-        followup:"Et le sujet d’hier, ça va mieux ?", profileTitle:"Faisons Connaissance", profileSubtitle:"Espace sûr.", startBtn:"Commencer",
+        followup:"Et le sujet d’hier, ça va mieux ?", profileTitle:"Faisons Connaissance", profileSubtitle:"Espace sûr.", startBtn:"Commencer", skipBtn: "Passer",
         gender:["Genre","Femme","Homme","N/A"], age:["Âge","18-24","25-34","35-44","45-54","55-64","65-75","75+"],
         job:["Emploi?","Étudiant","Travail","Au foyer","Sans emploi","Retraité"], relation:["Statut?","Célibataire","En couple","Marié","Compliqué"], mood:["Humeur?","Bien","Mal","Fâché","Fatigué","Neutre"]
       },
       es: { appTitle:"Confidente", appSubtitle:"Hablar te hará bien", labelAdvice:"Desahogarse", labelGossip:"Chisme", placeholder:"Escribe...", legalTitle:"Aviso Legal",
         legalText:"<ul><li><strong>1. Edad:</strong> 18+.</li><li><strong>2. Aviso:</strong> Simulación IA.</li><li><strong>3. Ética:</strong> Lenguaje respetuoso.</li><li><strong>4. Privacidad:</strong> Datos locales.</li><li><strong>5. Consentimiento:</strong> Uso = aceptación.</li></ul>",
         legalBtn:"Aceptar", clearMsg:"¿Borrar?", intro:"Hola.",
-        followup:"¿Qué tal lo de ayer?", profileTitle:"Conozcámonos", profileSubtitle:"Espacio seguro.", startBtn:"Iniciar",
+        followup:"¿Qué tal lo de ayer?", profileTitle:"Conozcámonos", profileSubtitle:"Espacio seguro.", startBtn:"Iniciar", skipBtn: "Saltar",
         gender:["Género?","Mujer","Hombre","N/A"], age:["Edad","18-24","25-34","35-44","45-54","55-64","65-75","75+"],
         job:["Ocupación?","Estudiante","Trabajo","Ama de casa","Desempleado","Jubilado"], relation:["Estado?","Soltero","En pareja","Casado","Complicado"], mood:["Ánimo?","Bien","Mal","Enojado","Cansado","Neutral"]
       },
       ru: { appTitle:"Душевный Друг", appSubtitle:"Разговор поможет", labelAdvice:"Выговориться", labelGossip:"Сплетни", placeholder:"Напишите...", legalTitle:"Уведомление",
         legalText:"<ul><li><strong>1. Возраст:</strong> 18+.</li><li><strong>2. Дисклеймер:</strong> ИИ-симуляция.</li><li><strong>3. Этика:</strong> Уважительный язык.</li><li><strong>4. Приватность:</strong> Данные локально.</li><li><strong>5. Согласие:</strong> Использование = согласие.</li></ul>",
         legalBtn:"Принять", clearMsg:"Очистить?", intro:"Здравствуйте.",
-        followup:"Как дела с тем, что было вчера?", profileTitle:"Профиль", profileSubtitle:"Безопасно.", startBtn:"Начать",
+        followup:"Как дела с тем, что было вчера?", profileTitle:"Профиль", profileSubtitle:"Безопасно.", startBtn:"Начать", skipBtn: "Пропустить",
         gender:["Пол?","Женский","Мужской","N/A"], age:["Возраст","18-24","25-34","35-44","45-54","55-64","65-75","75+"],
         job:["Работа?","Студент","Работаю","Домохозяйка","Безработный","Пенсионер"], relation:["Статус?","Свободен","В отношениях","Женат/Замужем","Сложно"], mood:["Настроение?","Хорошо","Плохо","Злюсь","Устал","Нейтрально"]
       },
       ja: { appTitle:"心の友", appSubtitle:"話すことで楽に", labelAdvice:"相談", labelGossip:"噂話", placeholder:"入力...", legalTitle:"免責事項",
         legalText:"<ul><li><strong>1. 年齢:</strong> 18+.</li><li><strong>2. 免責:</strong> AIシミュレーション.</li><li><strong>3. 倫理:</strong> 丁寧な言葉.</li><li><strong>4. プライバシー:</strong> ローカル保存.</li><li><strong>5. 同意:</strong> 利用=同意.</li></ul>",
         legalBtn:"同意", clearMsg:"履歴削除？", intro:"こんにちは。",
-        followup:"昨日のこと、その後どう？", profileTitle:"プロフィール", profileSubtitle:"安全な場所。", startBtn:"開始",
+        followup:"昨日のこと、その後どう？", profileTitle:"プロフィール", profileSubtitle:"安全な場所。", startBtn:"開始", skipBtn: "スキップ",
         gender:["性別?","女性","男性","未回答"], age:["年齢","18-24","25-34","35-44","45-54","55-64","65-75","75+"],
         job:["職業?","学生","会社員","主婦","無職","退職"], relation:["ステータス?","独身","交際中","既婚","複雑"], mood:["気分?","良い","悪い","怒り","疲れ","普通"]
       },
       pt: { appTitle:"Confidente", appSubtitle:"Falar faz bem", labelAdvice:"Desabafar", labelGossip:"Fofoca", placeholder:"Digite...", legalTitle:"Aviso",
         legalText:"<ul><li><strong>1. Idade:</strong> 18+.</li><li><strong>2. Aviso:</strong> Simulação IA.</li><li><strong>3. Ética:</strong> Linguagem respeitosa.</li><li><strong>4. Privacidade:</strong> Dados locais.</li><li><strong>5. Consentimento:</strong> Uso=aceite.</li></ul>",
         legalBtn:"Aceito", clearMsg:"Limpar?", intro:"Olá.",
-        followup:"E o assunto de ontem, como ficou?", profileTitle:"Perfil", profileSubtitle:"Seguro.", startBtn:"Iniciar",
+        followup:"E o assunto de ontem, como ficou?", profileTitle:"Perfil", profileSubtitle:"Seguro.", startBtn:"Iniciar", skipBtn: "Pular",
         gender:["Gênero","Feminino","Masculino","N/A"], age:["Idade","18-24","25-34","35-44","45-54","55-64","65-75","75+"],
         job:["Ocupação?","Estudante","Trabalho","Do lar","Desempregado","Aposentado"], relation:["Status?","Solteiro","Em relacionamento","Casado","Complicado"], mood:["Humor?","Bem","Mal","Bravo","Cansado","Neutro"]
       },
       ar: { appTitle:"رفيق الروح", appSubtitle:"تحدث", labelAdvice:"فضفضة", labelGossip:"دردشة", placeholder:"اكتب...", legalTitle:"تنبيه",
         legalText:"<ul><li><strong>1. العمر:</strong> +18.</li><li><strong>2. تنبيه:</strong> محاكاة ذكاء اصطناعي.</li><li><strong>3. أخلاق:</strong> لغة محترمة.</li><li><strong>4. الخصوصية:</strong> حفظ محلي.</li><li><strong>5. موافقة:</strong> الاستخدام = موافقة.</li></ul>",
         legalBtn:"موافق", clearMsg:"مسح؟", intro:"مرحباً.",
-        followup:"كيف كان موضوع الأمس؟", profileTitle:"الملف", profileSubtitle:"آمن.", startBtn:"ابدأ",
+        followup:"كيف كان موضوع الأمس؟", profileTitle:"الملف", profileSubtitle:"آمن.", startBtn:"ابدأ", skipBtn: "تخطي",
         gender:["الجنس؟","أنثى","ذكر","غير محدد"], age:["العمر","18-24","25-34","35-44","45-54","55-64","65-75","75+"],
         job:["العمل؟","طالب","عمل","ربة منزل","عاطل","متقاعد"], relation:["الحالة؟","أعزب","مرتبط","متزوج","معقد"], mood:["المزاج؟","جيد","سيء","غاضب","متعب","محايد"]
       },
       zh: { appTitle:"知己", appSubtitle:"倾诉", labelAdvice:"倾诉", labelGossip:"八卦", placeholder:"输入...", legalTitle:"声明",
         legalText:"<ul><li><strong>1. 年龄:</strong> 18+.</li><li><strong>2. 免责声明:</strong> AI模拟.</li><li><strong>3. 伦理:</strong> 请用尊重语言.</li><li><strong>4. 隐私:</strong> 本地存储.</li><li><strong>5. 同意:</strong> 使用=同意.</li></ul>",
         legalBtn:"接受", clearMsg:"清除？", intro:"你好。",
-        followup:"昨天的事，后来怎么样？", profileTitle:"简介", profileSubtitle:"安全。", startBtn:"开始",
+        followup:"昨天的事，后来怎么样？", profileTitle:"简介", profileSubtitle:"安全。", startBtn:"开始", skipBtn: "跳过",
         gender:["性别?","女","男","不透露"], age:["年龄","18-24","25-34","35-44","45-54","55-64","65-75","75+"],
         job:["职业?","学生","工作","家庭主妇","失业","退休"], relation:["状态?","单身","恋爱中","已婚","复杂"], mood:["心情?","好","坏","生气","累","一般"]
       }
     };
 
     // =================================================================
-    // 4) FOLLOW-UP (DÜNÜ HATIRLATMA) STORAGE
+    // 4) FOLLOW-UP STORAGE (KORUNDU)
     // =================================================================
     const FOLLOWUP_KEY = "ds_followup_v1";
     function todayISO() { return new Date().toISOString().slice(0,10); }
@@ -478,16 +485,9 @@
         app.addBubble(t.followup || Translations.en.followup, "ai");
       } catch(e) {}
     }
-// ---- FOLLOW-UP SAVE ----
-    try {
-      localStorage.setItem("ds_followup", JSON.stringify({
-        date: new Date().toISOString().slice(0,10),
-        topic: t.slice(0, 300)
-      }));
-    } catch(e){}
 
     // =================================================================
-    // 5) AI CONTROLLER (SENİN KODUN + DÜZELTME + STREAM EFEKTİ)
+    // 5) AI CONTROLLER (KORUNDU)
     // =================================================================
     const AIController = {
       history: [],
@@ -525,7 +525,6 @@ IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Te
         if (!apiKey) return "API Key Eksik (Kod içine girin).";
         const sys = this.getPersonas(this.userProfile)[mode];
 
-        // contents: sys + geçmiş + yeni user
         const contents = [
           { role: "user", parts: [{ text: sys }] },
           ...this.history,
@@ -560,7 +559,6 @@ IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Te
 
           const reply = d.candidates[0]?.content?.parts?.[0]?.text || "No response.";
 
-          // geçmişi SADECE burada güncelle (duplicate olmasın diye)
           this.history.push({ role: "user", parts: [{ text: text }] });
           this.history.push({ role: "model", parts: [{ text: reply }] });
 
@@ -575,7 +573,7 @@ IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Te
     };
 
     // =================================================================
-    // 6) APP (SENİN KODUN + FOLLOWUP + STREAMING EFEKTİ + ENTER GÖNDER)
+    // 6) APP (GÜNCELLENDİ: SKIP FONKSİYONU EKLENDİ)
     // =================================================================
     const app = {
       lang: 'tr',
@@ -588,19 +586,12 @@ IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Te
 
         try { CanvasEffect.init(); } catch(e) {}
 
-        // Enter ile gönder (Shift+Enter yeni satır)
         this.input.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             this.sendMessage();
           }
         });
-      try {
-        localStorage.setItem("ds_followup", JSON.stringify({
-          date: new Date().toISOString().slice(0,10),
-          topic: txt.slice(0,300)
-        }));
-      } catch(e){}
 
         const hasProfile = AIController.loadData();
 
@@ -638,6 +629,10 @@ IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Te
         setT('profileTitle', t.profileTitle); setT('profileSubtitle', t.profileSubtitle);
         const sb = document.getElementById('startBtn');
         if (sb) sb.innerHTML = `${t.startBtn} <i class="fa-solid fa-arrow-right ml-2"></i>`;
+        
+        // APPLE FIX: Skip butonu çevirisi
+        const skb = document.getElementById('skipBtn');
+        if (skb) skb.innerText = t.skipBtn || "Skip (Anonymous)";
 
         setT('appTitle', t.appTitle); setT('appSubtitle', t.appSubtitle);
         setT('labelAdvice', t.labelAdvice); setT('labelGossip', t.labelGossip);
@@ -649,7 +644,6 @@ IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Te
         this.fillSelect('userRelation', t.relation);
         this.fillSelect('userMood', t.mood);
 
-        // lang class
         document.body.classList.remove('lang-ar', 'lang-ja', 'lang-zh');
         if (l === 'ar') document.body.classList.add('lang-ar');
         if (l === 'ja') document.body.classList.add('lang-ja');
@@ -679,7 +673,6 @@ IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Te
           AIController.saveProfile(AIController.userProfile);
           this.updateLang(this.lang);
 
-          // Restore theme
           if (AIController.userProfile.gender) this.updateTheme(AIController.userProfile.gender);
 
           if (AIController.history.length > 0) this.restoreChat();
@@ -689,36 +682,7 @@ IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Te
               this.addBubble(t.intro, 'ai');
             }, 500);
           }
-          setTimeout(() => {
-            try {
-              const raw = localStorage.getItem("ds_followup");
-              if(!raw) return;
-
-              const f = JSON.parse(raw);
-              const yesterday = new Date();
-              yesterday.setDate(yesterday.getDate() - 1);
-              const yISO = yesterday.toISOString().slice(0,10);
-
-              if(f.date === yISO) {
-                this.addBubble(t.followup, "ai");
-              }
-            } catch(e){}
-          }, 800);
-          try {
-            const f = JSON.parse(localStorage.getItem("ds_followup"));
-            if(f){
-              const y = new Date();
-              y.setDate(y.getDate()-1);
-              const yISO = y.toISOString().slice(0,10);
-              if(f.date === yISO){
-                this.addBubble(Translations[this.lang].followup, "ai");
-              }
-            }
-          } catch(e){}
-      localStorage.removeItem("ds_followup");
-
-
-          // Dün hatırlatma (legal kabul sonrası)
+          
           setTimeout(() => maybeAskFollowup(this.lang), 900);
 
         } else {
@@ -729,8 +693,6 @@ IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Te
 
       handleGenderChange(val) {
         this.updateTheme(val);
-
-        // Filter "Ev Hanımı" for male
         const t = Translations[this.lang] || Translations['tr'];
         this.fillSelect('userJob', t.job);
 
@@ -788,6 +750,25 @@ IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Te
         }, 800);
       },
 
+      // APPLE FIX: ANONİM GİRİŞ FONKSİYONU
+      skipProfile() {
+        // Anonim profil oluştur
+        const p = {
+          gender: 'N/A', age: '18+', language: this.lang,
+          job: 'Unknown', relation: 'Unknown', mood: 'Neutral'
+        };
+        AIController.saveProfile(p);
+        
+        // Modal'ı kapat
+        document.getElementById('profileModal').classList.remove('active');
+        
+        // Karşılama
+        setTimeout(() => {
+          const t = Translations[this.lang] || Translations['tr'];
+          this.addBubble(t.intro, 'ai');
+        }, 500);
+      },
+
       clearChatHistory() {
         const t = Translations[this.lang] || Translations['tr'];
         if (confirm(t.clearMsg)) { AIController.clear(); document.getElementById('chatBox').innerHTML = ''; location.reload(); }
@@ -806,102 +787,68 @@ IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Te
       setMode(m) {
         app.currentMode = m;
         document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-        const btn = document.querySelector(`.mode-btn.${m}`);
+        const btn = document.querySelector(`.mode-btn.${m === 'advice' ? 'advice' : 'gossip'}`);
         if (btn) btn.classList.add('active');
       },
 
-      // === Streaming effect: response geldiğinde yazıyormuş gibi bas ===
       async typeIntoBubble(bubbleEl, fullText) {
         if (!bubbleEl) return;
         const raw = String(fullText || "");
-
-        // hızlı yazım: uzun metinde hız artsın
         const baseDelay = raw.length > 500 ? 6 : (raw.length > 200 ? 10 : 16);
-
-        // önce textContent ile akar, en sonda markdown bold uygula
         bubbleEl.textContent = "";
         let i = 0;
-
         while (i < raw.length) {
-          // chunk
           const step = raw.length > 800 ? 6 : 2;
           bubbleEl.textContent += raw.slice(i, i + step);
           i += step;
           this.scrollToBottom();
           await new Promise(r => setTimeout(r, baseDelay));
         }
-
-        // final format (sadece **bold**)
         bubbleEl.innerHTML = raw.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
         this.scrollToBottom();
       },
 
       async sendMessage() {
         if (this._busy) return;
-
         const txt = (app.input.value || "").trim();
         if (!txt) return;
-
         this._busy = true;
-
-        // Kullanıcı bubble
         app.addBubble(txt, 'user');
         app.input.value = '';
-
-        // Dün hatırlatma için topic kaydet
         saveFollowupTopic(txt);
-
-        // Typing dots
         const tid = 't-' + Date.now();
         this.showTyping(tid);
-
         const res = await AIController.generate(txt, app.currentMode);
-
         const te = document.getElementById(tid);
         if (te) te.remove();
-
         if (String(res).includes("API ERROR") || String(res).includes("NO_KEY")) {
           alert(res);
           this._busy = false;
           return;
         }
-
-        // Streaming AI bubble
-        const aiBubble = this.addBubble("", 'ai', true, true); // empty bubble, return element
+        const aiBubble = this.addBubble("", 'ai', true, true);
         await this.typeIntoBubble(aiBubble, res);
-
         this._busy = false;
       },
 
-      // addBubble: returnBubble=true -> bubble DOM element döndür
       addBubble(txt, type, noAnim, returnBubble) {
         const box = document.getElementById('chatBox');
         const div = document.createElement('div');
         div.className = "message-container";
-
         const b = document.createElement('div');
         b.className = `message ${type}`;
         if (noAnim) b.style.animation = 'none';
-
-        if (type === 'ai') {
-          b.textContent = txt || "";
-        } else {
-          b.innerHTML = String(txt || "").replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
-        }
-
+        if (type === 'ai') b.textContent = txt || "";
+        else b.innerHTML = String(txt || "").replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
         div.appendChild(b);
-
         if (type === 'ai') {
           const fb = document.createElement('div');
           fb.className = 'feedback-container';
           fb.innerHTML = `<i class="fa-regular fa-thumbs-up fb-btn" onclick="this.classList.toggle('liked')"></i><i class="fa-regular fa-thumbs-down fb-btn" onclick="this.classList.toggle('disliked')"></i>`;
-          // noAnim true iken de feedback ekle (istersen kapat)
           div.appendChild(fb);
         }
-
         box.appendChild(div);
         app.scrollToBottom();
-
         if (returnBubble) return b;
       },
 
@@ -917,36 +864,22 @@ IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Te
       scrollToBottom() { const b = document.getElementById('chatBox'); b.scrollTop = b.scrollHeight; }
     };
 
-    window.onload = () => app.init();
-
     // =================================================================
-    // 7) FULL TIME INTELLIGENCE MODULE (SENİN KODUN) - HTML DIŞINA TAŞMA YOK
+    // 7) FULL TIME INTELLIGENCE MODULE (KORUNDU)
     // =================================================================
     function getFullTimeContext(lang = "tr") {
       const now = new Date();
-
       const dateOpt = { year: 'numeric', month: 'long', day: 'numeric' };
       const dayOpt  = { weekday: 'long' };
       const timeOpt = { hour: '2-digit', minute: '2-digit' };
-
       const todayDate = now.toLocaleDateString(lang, dateOpt);
       const todayDay  = now.toLocaleDateString(lang, dayOpt);
       const nowTime   = now.toLocaleTimeString(lang, timeOpt);
-
-      const tomorrow = new Date(now);
-      tomorrow.setDate(now.getDate() + 1);
-
-      const plus2h = new Date(now);
-      plus2h.setHours(now.getHours() + 2);
-
-      const plus3d = new Date(now);
-      plus3d.setDate(now.getDate() + 3);
-
-      const nextWeek = new Date(now);
-      nextWeek.setDate(now.getDate() + 7);
-
+      const tomorrow = new Date(now); tomorrow.setDate(now.getDate() + 1);
+      const plus2h = new Date(now); plus2h.setHours(now.getHours() + 2);
+      const plus3d = new Date(now); plus3d.setDate(now.getDate() + 3);
+      const nextWeek = new Date(now); nextWeek.setDate(now.getDate() + 7);
       const isWeekend = now.getDay() === 0 || now.getDay() === 6;
-
       return {
         today: `${todayDay}, ${todayDate}`,
         timeNow: nowTime,
@@ -954,22 +887,17 @@ IDENTITY but do not repeat it: "Ben, Büyük Atatürk'ten ilham alan ATAOL AI Te
         after2Hours: plus2h.toLocaleTimeString(lang, timeOpt),
         after3Days: `${plus3d.toLocaleDateString(lang, dayOpt)}, ${plus3d.toLocaleDateString(lang, dateOpt)}`,
         nextWeek: `${nextWeek.toLocaleDateString(lang, dayOpt)}, ${nextWeek.toLocaleDateString(lang, dateOpt)}`,
-        isWeekend,
-        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        iso: now.toISOString()
+        isWeekend, timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, iso: now.toISOString()
       };
     }
 
     const _originalGetPersonas = AIController.getPersonas.bind(AIController);
-
     AIController.getPersonas = function(profile) {
       const lang = profile.language || "tr";
       const t = getFullTimeContext(lang);
       const base = _originalGetPersonas(profile);
-
       const timeBlock = `
 CURRENT REAL TIME CONTEXT (ALWAYS TRUE):
-
 - Today: ${t.today}
 - Current time: ${t.timeNow}
 - Tomorrow: ${t.tomorrow}
@@ -986,17 +914,10 @@ STRICT RULES:
 - NEVER guess. Use ONLY this block.
 - Keep answers short and natural.
 `;
-
-      return {
-        advice: timeBlock + "\n" + base.advice,
-        gossip: timeBlock + "\n" + base.gossip
-      };
+      return { advice: timeBlock + "\n" + base.advice, gossip: timeBlock + "\n" + base.gossip };
     };
+
+    window.onload = () => app.init();
   </script>
 </body>
 </html>
-
-
-
-
-
