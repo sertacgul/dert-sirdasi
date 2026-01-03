@@ -20,38 +20,50 @@
   <style>
     :root { --primary-gradient: linear-gradient(135deg, #f472b6 0%, #a78bfa 100%); --user-msg-bg: linear-gradient(135deg, #ec4899, #be185d); --btn-bg: #ec4899; --icon-bg: linear-gradient(135deg, #f472b6 0%, #a78bfa 100%); }
     body.theme-male { --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%); --user-msg-bg: linear-gradient(135deg, #2563eb, #1d4ed8); --btn-bg: #2563eb; --icon-bg: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%); }
-    body { font-family: 'Nunito', sans-serif; background-color: #111827; color: #e2e8f0; overflow: hidden; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
+    body { font-family: 'Nunito', sans-serif; background-color: #111827; color: #e2e8f0; overflow: hidden; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    
     .app-container { width: 100%; height: 100%; background: linear-gradient(180deg, #1f2937 0%, #0f172a 100%); display: flex; flex-direction: column; position: absolute; inset: 0; margin: 0 auto; max-width: 600px; }
     @media (min-width: 768px) { .app-container { border-left: 1px solid #374151; border-right: 1px solid #374151; } }
+    
     .splash-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 100%); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s ease-out; }
     .splash-logo { font-size: 4.5rem; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; }
     .splash-title { font-size: 2.5rem; font-weight: 900; color: white; }
     .splash-subtitle { color: #94a3b8; font-size: 0.9rem; margin-top: 0.5rem; font-weight: 600; letter-spacing: 1px; }
     .splash-screen.fade-out { opacity: 0; pointer-events: none; }
+    
     .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.98); z-index: 100; display: none; flex-direction: column; justify-content: center; padding: 24px; }
     .modal-overlay.active { display: flex; }
-    .form-select { background-color: #1f2937; border: 1px solid #374151; color: white; padding: 12px; border-radius: 12px; width: 100%; margin-bottom: 12px; outline: none; transition: border-color 0.3s; font-size: 0.95rem; }
-    .form-select:focus { border-color: #ec4899; }
+    .form-select { background-color: #1f2937; border: 1px solid #374151; color: white; padding: 12px; border-radius: 12px; width: 100%; margin-bottom: 12px; outline: none; }
     .lang-select-mini { background: #374151; color: white; border: 1px solid #4b5563; padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; outline: none; }
     .legal-box { background: #111827; border: 1px solid #374151; padding: 15px; border-radius: 8px; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 20px; max-height: 250px; overflow-y: auto; line-height: 1.6; }
+    
+    /* Chat Area */
     .chat-area { flex: 1; overflow-y: auto; padding: 16px; scroll-behavior: smooth; overscroll-behavior-y: contain; }
     .message-container { display: flex; flex-direction: column; width: 100%; margin-bottom: 16px; animation: popIn 0.3s ease; }
     .message { max-width: 85%; padding: 12px 16px; border-radius: 18px; font-size: 0.95rem; line-height: 1.5; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.3); word-wrap: break-word; white-space: pre-wrap; }
     .message.user { align-self: flex-end; background: var(--user-msg-bg); color: white; border-bottom-right-radius: 2px; }
     .message.ai { align-self: flex-start; background: #334155; color: #f1f5f9; border-bottom-left-radius: 2px; border: 1px solid #475569; }
-    .feedback-container { display: flex; gap: 15px; margin-top: 6px; margin-left: 10px; opacity: 0.6; }
-    .fb-btn { cursor: pointer; color: #6b7280; font-size: 1rem; transition: 0.2s; }
-    .fb-btn:hover { color: white; transform: scale(1.2); }
-    .fb-btn.liked { color: #34d399; }
-    .fb-btn.disliked { color: #f87171; }
+    
+    /* --- HEADER FIX (Çok Önemli) --- */
+    /* safe-area-inset-top + 20px boşluk bırakarak çentikten kurtarıyoruz */
+    header {
+        padding-top: calc(env(safe-area-inset-top) + 20px);
+        padding-bottom: 16px;
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    /* Input Area */
     .input-area { background: #1f2937; padding: 16px; border-top: 1px solid #374151; display: flex; flex-direction: column; gap: 10px; padding-bottom: calc(env(safe-area-inset-bottom) + 20px); box-shadow: 0 -4px 20px rgba(0,0,0,0.4); }
     .send-btn-custom { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: 0.2s; background-color: var(--btn-bg); color: white; }
     .send-btn-custom:active { transform: scale(0.95); }
+    
     .mode-switch { display: flex; background: #111827; padding: 4px; border-radius: 10px; margin-bottom: 5px; border: 1px solid #374151; }
     .mode-btn { flex: 1; padding: 8px; text-align: center; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; color: #6b7280; transition: 0.3s; user-select: none; }
     .mode-btn.active.advice { background: #374151; color: #f472b6; }
     .mode-btn.active.gossip { background: #4c1d95; color: #e9d5ff; }
     .header-icon-bg { background: var(--icon-bg); }
+    
     @keyframes popIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .typing-dots span { display: inline-block; width: 6px; height: 6px; background: #cbd5e1; border-radius: 50%; margin: 0 2px; animation: typing 1.4s infinite; }
     .typing-dots span:nth-child(2) { animation-delay: 0.2s; } .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
@@ -70,7 +82,7 @@
       </div>
     </div>
 
-    <!-- 1. YASAL UYARI (10 DİL - DÜZELTİLDİ) -->
+    <!-- LEGAL MODAL -->
     <div id="legalModal" class="modal-overlay">
       <div class="w-full max-w-sm mx-auto mb-4 flex justify-end">
         <select id="legalLangSelect" class="lang-select-mini" onchange="app.changeAppLanguage(this.value)">
@@ -93,7 +105,7 @@
       </div>
     </div>
 
-    <!-- 2. PROFİL -->
+    <!-- PROFILE MODAL -->
     <div id="profileModal" class="modal-overlay">
       <div class="w-full max-w-sm mx-auto">
         <div class="text-center mb-6">
@@ -113,15 +125,20 @@
       </div>
     </div>
 
-    <header class="p-4 flex items-center justify-between border-b border-gray-700 bg-gray-900 z-10 sticky top-0">
-      <div class="flex items-center gap-3">
+    <!-- HEADER (SAFE AREA FIX) -->
+    <header class="flex items-center justify-between border-b border-gray-700 bg-gray-900 z-10 sticky top-0">
+      <div class="flex items-center gap-4">
         <div class="w-10 h-10 rounded-full header-icon-bg flex items-center justify-center text-white font-bold text-lg transition-colors duration-500"><i class="fa-solid fa-ear-listen"></i></div>
         <div>
-          <h1 id="appTitle" class="font-bold text-white">Soul Confidant</h1>
-          <span id="appSubtitle" class="text-xs text-pink-400">Good to talk</span>
+          <h1 id="appTitle" class="font-bold text-white text-lg">Soul Confidant</h1>
+          <span id="appSubtitle" class="text-xs text-pink-400 block">Good to talk</span>
         </div>
       </div>
-      <button onclick="app.clearChatHistory()" class="w-12 h-12 rounded-full border border-gray-600 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-800 active:scale-90 active:bg-red-900 active:text-white transition-all duration-150 mr-1 cursor-pointer z-50"><i class="fa-solid fa-trash-can text-lg"></i></button>
+      <!-- TRASH ICON: Daha büyük, daha güvenli -->
+      <button onclick="app.clearChatHistory()"
+        class="w-14 h-14 rounded-full border border-gray-600 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-800 active:scale-90 active:bg-red-900 active:text-white transition-all duration-150 cursor-pointer z-50">
+        <i class="fa-solid fa-trash-can text-xl"></i>
+      </button>
     </header>
 
     <div id="chatBox" class="chat-area flex flex-col"></div>
@@ -145,91 +162,19 @@
 
     const CanvasEffect={canvas:null,ctx:null,particles:[],animationId:null,init(){this.canvas=document.getElementById("splashCanvas");if(!this.canvas)return;this.ctx=this.canvas.getContext("2d");if(!this.ctx)return;this.resize();window.addEventListener("resize",()=>this.resize());this.createParticles();this.animate()},resize(){if(this.canvas){this.canvas.width=window.innerWidth;this.canvas.height=window.innerHeight}},createParticles(){if(!this.canvas)return;const count=Math.floor(this.canvas.width*this.canvas.height/10000);this.particles=[];for(let i=0;i<count;i++){this.particles.push({x:Math.random()*this.canvas.width,y:Math.random()*this.canvas.height,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5,size:Math.random()*2+1,alpha:Math.random()*.5+.1})}},animate(){if(!this.ctx)return;this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);for(let i=0;i<this.particles.length;i++){const p=this.particles[i];p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>this.canvas.width)p.vx*=-1;if(p.y<0||p.y>this.canvas.height)p.vy*=-1;this.ctx.fillStyle=`rgba(167, 139, 250, ${p.alpha})`;this.ctx.beginPath();this.ctx.arc(p.x,p.y,p.size,0,Math.PI*2);this.ctx.fill()}this.animationId=requestAnimationFrame(()=>this.animate())},stop(){if(this.animationId)cancelAnimationFrame(this.animationId)}};
 
-    // --- TRANSLATIONS (DÜZELTİLDİ: TÜM DİLLER DOLU) ---
     const Translations = {
-      en: { 
-        appTitle:"Soul Confidant", appSubtitle:"Good to talk", labelAdvice:"Vent", labelGossip:"Gossip", placeholder:"Type here...", 
-        legalTitle:"Legal Disclaimer", 
-        legalText:"<ul><li><strong>1. Age Limit:</strong> 18+ required.</li><li><strong>2. Disclaimer:</strong> AI simulation.</li><li><strong>3. Ethics:</strong> Respectful language only.</li><li><strong>4. Privacy:</strong> Local data storage.</li><li><strong>5. Usage:</strong> For functionality only.</li></ul>", 
-        legalBtn:"I Accept", clearMsg:"Clear history?", intro:"Hey there! I'm here to listen.", 
-        profileTitle:"Let's Know You", profileSubtitle:"Safe space.", startBtn:"Start", skipBtn:"Skip (Anonymous)", 
-        gender:["Gender (Optional)","Female","Male","Prefer not to say"], age:["Age (Optional)","Prefer not to say","18+"], job:["Job (Optional)","Prefer not to say","Student","Worker"], relation:["Status (Optional)","Prefer not to say","Single"], mood:["Mood (Optional)","Neutral","Happy","Sad","Angry"] 
-      },
-      tr: { 
-        appTitle:"Dert Sırdaşı", appSubtitle:"Seninle konuşmak iyi gelecek", labelAdvice:"Dertleşme", labelGossip:"Gıybet", placeholder:"Yaz bakalım...", 
-        legalTitle:"Yasal Uyarı", 
-        legalText:"<ul><li><strong>1. Yaş:</strong> 18+ yaş sınırı.</li><li><strong>2. AI:</strong> Yapay zeka ile sohbet.</li><li><strong>3. Etik:</strong> Saygılı dil kullanınız.</li><li><strong>4. Gizlilik:</strong> Veriler cihazda saklanır.</li><li><strong>5. Kullanım:</strong> Sadece işlevsellik için.</li></ul>", 
-        legalBtn:"Kabul Ediyorum", clearMsg:"Sohbet geçmişi silinsin mi?", intro:"Selam! Seni dinlemek için buradayım.", 
-        profileTitle:"Seni Tanıyalım", profileSubtitle:"Yargısız, güvenli dert ortağın.", startBtn:"Başla", skipBtn:"Şimdilik Atla", 
-        gender:["Cinsiyet (Opsiyonel)","Kadın","Erkek","Belirtmek İstemiyorum"], age:["Yaş (Opsiyonel)","Belirtmek İstemiyorum","18+"], job:["Meslek (Opsiyonel)","Belirtmek İstemiyorum","Öğrenci","Çalışan"], relation:["İlişki (Opsiyonel)","Belirtmek İstemiyorum","Bekar"], mood:["Ruh halin nasıl? (Opsiyonel)","Nötr","Mutlu","Üzgün","Kızgın"] 
-      },
-      de: { 
-        appTitle:"Seelenverwandter", appSubtitle:"Es tut gut zu reden", labelAdvice:"Reden", labelGossip:"Klatsch", placeholder:"Schreiben...", 
-        legalTitle:"Rechtlicher Hinweis", 
-        legalText:"<ul><li><strong>1. Altersgrenze:</strong> 18+ erforderlich.</li><li><strong>2. Haftungsausschluss:</strong> KI-Simulation.</li><li><strong>3. Ethik:</strong> Respektvolle Sprache.</li><li><strong>4. Datenschutz:</strong> Lokale Speicherung.</li><li><strong>5. Nutzung:</strong> Nur für Funktionalität.</li></ul>", 
-        legalBtn:"Ich stimme zu", clearMsg:"Löschen?", intro:"Hallo, ich höre zu.", 
-        profileTitle:"Dich Kennenlernen", profileSubtitle:"Sicherer Raum.", startBtn:"Starten", skipBtn:"Überspringen", 
-        gender:["Geschlecht (Optional)","Weiblich","Männlich","Keine Angabe"], age:["Alter (Optional)","Keine Angabe","18+"], job:["Beruf (Optional)","Keine Angabe","Student","Arbeit"], relation:["Status (Optional)","Keine Angabe","Single"], mood:["Laune? (Optional)","Neutral","Gut","Schlecht"] 
-      },
-      fr: { 
-        appTitle:"Confident", appSubtitle:"Parler fait du bien", labelAdvice:"Confier", labelGossip:"Potins", placeholder:"Écrivez...", 
-        legalTitle:"Avis Légal", 
-        legalText:"<ul><li><strong>1. Âge:</strong> 18+ requis.</li><li><strong>2. Clause:</strong> Simulation IA.</li><li><strong>3. Éthique:</strong> Langage respectueux.</li><li><strong>4. Confidentialité:</strong> Données locales.</li><li><strong>5. Usage:</strong> Fonctionnalité uniquement.</li></ul>", 
-        legalBtn:"J'accepte", clearMsg:"Effacer?", intro:"Bonjour, je vous écoute.", 
-        profileTitle:"Faisons Connaissance", profileSubtitle:"Espace sûr.", startBtn:"Commencer", skipBtn:"Passer", 
-        gender:["Genre (Optionnel)","Femme","Homme","N/A"], age:["Âge (Optionnel)","N/A","18+"], job:["Emploi (Optionnel)","N/A","Étudiant","Travail"], relation:["Statut (Optionnel)","N/A","Célibataire"], mood:["Humeur? (Optionnel)","Neutre","Bien","Mal"] 
-      },
-      es: { 
-        appTitle:"Confidente", appSubtitle:"Hablar ayuda", labelAdvice:"Desahogo", labelGossip:"Chisme", placeholder:"Escribe...", 
-        legalTitle:"Aviso Legal", 
-        legalText:"<ul><li><strong>1. Edad:</strong> 18+ requerido.</li><li><strong>2. Aviso:</strong> Simulación IA.</li><li><strong>3. Ética:</strong> Lenguaje respetuoso.</li><li><strong>4. Privacidad:</strong> Datos locales.</li><li><strong>5. Uso:</strong> Solo funcionalidad.</li></ul>", 
-        legalBtn:"Aceptar", clearMsg:"¿Borrar?", intro:"Hola, te escucho.", 
-        profileTitle:"Perfil", profileSubtitle:"Seguro.", startBtn:"Iniciar", skipBtn:"Saltar", 
-        gender:["Género (Opcional)","Mujer","Hombre","N/A"], age:["Edad (Opcional)","N/A","18+"], job:["Ocupación (Opcional)","N/A","Estudiante"], relation:["Estado (Opcional)","N/A","Soltero"], mood:["Ánimo (Opcional)","Neutral","Bien","Mal"] 
-      },
-      ru: { 
-        appTitle:"Душевный Друг", appSubtitle:"Разговор поможет", labelAdvice:"Душа", labelGossip:"Сплетни", placeholder:"Напишите...", 
-        legalTitle:"Уведомление", 
-        legalText:"<ul><li><strong>1. Возраст:</strong> 18+ обязательно.</li><li><strong>2. Отказ:</strong> ИИ-симуляция.</li><li><strong>3. Этика:</strong> Уважение.</li><li><strong>4. Приватность:</strong> Локально.</li><li><strong>5. Использование:</strong> Только функции.</li></ul>", 
-        legalBtn:"Принять", clearMsg:"Очистить?", intro:"Привет, я слушаю.", 
-        profileTitle:"Профиль", profileSubtitle:"Безопасно.", startBtn:"Начать", skipBtn:"Пропустить", 
-        gender:["Пол (Опц.)","Жен","Муж","Нет"], age:["Возраст (Опц.)","Нет","18+"], job:["Работа (Опц.)","Нет","Студент"], relation:["Статус (Опц.)","Нет","Свободен"], mood:["Настроение (Опц.)","Норм","Хорошо","Плохо"] 
-      },
-      ja: { 
-        appTitle:"心の友", appSubtitle:"話そう", labelAdvice:"相談", labelGossip:"噂話", placeholder:"入力...", 
-        legalTitle:"免責事項", 
-        legalText:"<ul><li><strong>1. 年齢:</strong> 18歳以上.</li><li><strong>2. 免責:</strong> AIシミュレーション.</li><li><strong>3. 倫理:</strong> 丁寧な言葉.</li><li><strong>4. プライバシー:</strong> ローカル保存.</li><li><strong>5. 用途:</strong> 機能のみ.</li></ul>", 
-        legalBtn:"同意", clearMsg:"削除？", intro:"こんにちは。", 
-        profileTitle:"プロフィール", profileSubtitle:"安心。", startBtn:"開始", skipBtn:"スキップ", 
-        gender:["性別 (任意)","女性","男性","回答なし"], age:["年齢 (任意)","回答なし","18+"], job:["職業 (任意)","回答なし","学生"], relation:["状態 (任意)","回答なし","独身"], mood:["気分 (任意)","普通","良い","悪い"] 
-      },
-      pt: { 
-        appTitle:"Confidente", appSubtitle:"Falar faz bem", labelAdvice:"Desabafo", labelGossip:"Fofoca", placeholder:"Digite...", 
-        legalTitle:"Aviso Legal", 
-        legalText:"<ul><li><strong>1. Idade:</strong> 18+ necessário.</li><li><strong>2. Aviso:</strong> Simulação IA.</li><li><strong>3. Ética:</strong> Respeito.</li><li><strong>4. Privacidade:</strong> Local.</li><li><strong>5. Uso:</strong> Funcionalidade apenas.</li></ul>", 
-        legalBtn:"Aceitar", clearMsg:"Limpar?", intro:"Olá, estou ouvindo.", 
-        profileTitle:"Perfil", profileSubtitle:"Seguro.", startBtn:"Iniciar", skipBtn:"Pular", 
-        gender:["Gênero (Opcional)","Feminino","Masculino","N/A"], age:["Idade (Opcional)","N/A","18+"], job:["Trabalho (Opcional)","N/A","Estudante"], relation:["Status (Opcional)","N/A","Solteiro"], mood:["Humor (Opcional)","Neutro","Bem","Mal"] 
-      },
-      ar: { 
-        appTitle:"رفيق الروح", appSubtitle:"فضفض", labelAdvice:"نصيحة", labelGossip:"دردشة", placeholder:"اكتب...", 
-        legalTitle:"تنبيه قانوني", 
-        legalText:"<ul><li><strong>1. العمر:</strong> 18+ مطلوب.</li><li><strong>2. تنبيه:</strong> محاكاة ذكاء اصطناعي.</li><li><strong>3. أخلاق:</strong> لغة محترمة.</li><li><strong>4. الخصوصية:</strong> حفظ محلي.</li><li><strong>5. الاستخدام:</strong> للوظائف فقط.</li></ul>", 
-        legalBtn:"موافق", clearMsg:"مسح؟", intro:"مرحباً، أنا أسمعك.", 
-        profileTitle:"الملف", profileSubtitle:"آمن.", startBtn:"ابدأ", skipBtn:"تخطي", 
-        gender:["الجنس (اختياري)","أنثى","ذكر","لا"], age:["العمر (اختياري)","لا","18+"], job:["العمل (اختياري)","لا","طالب"], relation:["الحالة (اختياري)","لا","أعزب"], mood:["المزاج (اختياري)","عادي","جيد","سيء"] 
-      },
-      zh: { 
-        appTitle:"知己", appSubtitle:"倾诉", labelAdvice:"倾诉", labelGossip:"八卦", placeholder:"输入...", 
-        legalTitle:"法律声明", 
-        legalText:"<ul><li><strong>1. 年龄:</strong> 18岁以上.</li><li><strong>2. 声明:</strong> AI模拟.</li><li><strong>3. 伦理:</strong> 尊重语言.</li><li><strong>4. 隐私:</strong> 本地存储.</li><li><strong>5. 用途:</strong> 仅限功能.</li></ul>", 
-        legalBtn:"接受", clearMsg:"清除？", intro:"你好，我在听。", 
-        profileTitle:"简介", profileSubtitle:"安全。", startBtn:"开始", skipBtn:"跳过", 
-        gender:["性别 (可选)","女","男","不填"], age:["年龄 (可选)","不填","18+"], job:["职业 (可选)","不填","学生"], relation:["状态 (可选)","不填","单身"], mood:["心情 (可选)","一般","好","坏"] 
-      }
+      en: { appTitle:"Soul Confidant", appSubtitle:"Good to talk", labelAdvice:"Vent", labelGossip:"Gossip", placeholder:"Type here...", legalTitle:"Legal Disclaimer", legalText:"<ul><li><strong>1. Age Limit:</strong> 18+ required.</li><li><strong>2. Disclaimer:</strong> AI simulation.</li><li><strong>3. Ethics:</strong> Respectful language only.</li><li><strong>4. Privacy:</strong> Local data storage.</li><li><strong>5. Usage:</strong> For functionality only.</li></ul>", legalBtn:"I Accept", clearMsg:"Clear history?", intro:"Hey there! I'm here to listen.", profileTitle:"Let's Know You", profileSubtitle:"Safe space.", startBtn:"Start", skipBtn:"Skip (Anonymous)", gender:["Gender (Optional)","Female","Male","Prefer not to say"], age:["Age (Optional)","Prefer not to say","18-24","25-34","35+"], job:["Job (Optional)","Prefer not to say","Student","Worker","Retired"], relation:["Status (Optional)","Prefer not to say","Single","Taken","Married"], mood:["Mood (Optional)","Neutral","Happy","Sad","Angry","Tired"] },
+      tr: { appTitle:"Dert Sırdaşı", appSubtitle:"Seninle konuşmak iyi gelecek", labelAdvice:"Dertleşme", labelGossip:"Gıybet", placeholder:"Yaz bakalım...", legalTitle:"Yasal Uyarı", legalText:"<ul><li><strong>1. Yaş:</strong> 18+ yaş sınırı.</li><li><strong>2. AI:</strong> Yapay zeka ile sohbet.</li><li><strong>3. Etik:</strong> Saygılı dil kullanınız.</li><li><strong>4. Gizlilik:</strong> Veriler cihazda saklanır.</li><li><strong>5. Kullanım:</strong> Sadece işlevsellik için.</li></ul>", legalBtn:"Kabul Ediyorum", clearMsg:"Sohbet geçmişi silinsin mi?", intro:"Selam! Seni dinlemek için buradayım.", profileTitle:"Seni Tanıyalım", profileSubtitle:"Yargısız, güvenli dert ortağın.", startBtn:"Başla", skipBtn:"Şimdilik Atla", gender:["Cinsiyet (Opsiyonel)","Kadın","Erkek","Belirtmek İstemiyorum"], age:["Yaş (Opsiyonel)","Belirtmek İstemiyorum","18-24","25-34","35-44","45+"], job:["Meslek (Opsiyonel)","Belirtmek İstemiyorum","Öğrenci","Çalışan","Emekli"], relation:["İlişki (Opsiyonel)","Belirtmek İstemiyorum","Bekar","İlişkisi Var","Evli"], mood:["Ruh halin nasıl? (Opsiyonel)","Nötr","Mutlu","Üzgün","Kızgın","Yorgun"] },
+      de: { appTitle:"Seelenverwandter", appSubtitle:"Es tut gut zu reden", labelAdvice:"Reden", labelGossip:"Klatsch", placeholder:"Schreiben...", legalTitle:"Rechtlicher Hinweis", legalText:"<ul><li><strong>1. Altersgrenze:</strong> 18+ erforderlich.</li><li><strong>2. Haftungsausschluss:</strong> KI-Simulation.</li><li><strong>3. Ethik:</strong> Respektvolle Sprache.</li><li><strong>4. Datenschutz:</strong> Lokale Speicherung.</li><li><strong>5. Nutzung:</strong> Nur für Funktionalität.</li></ul>", legalBtn:"Ich stimme zu", clearMsg:"Löschen?", intro:"Hallo, ich höre zu.", profileTitle:"Dich Kennenlernen", profileSubtitle:"Sicherer Raum.", startBtn:"Starten", skipBtn:"Überspringen", gender:["Geschlecht (Optional)","Weiblich","Männlich","Keine Angabe"], age:["Alter (Optional)","Keine Angabe","18+"], job:["Beruf (Optional)","Keine Angabe","Student","Arbeit"], relation:["Status (Optional)","Keine Angabe","Single","Beziehung"], mood:["Laune? (Optional)","Neutral","Gut","Schlecht"] },
+      fr: { appTitle:"Confident", appSubtitle:"Parler fait du bien", labelAdvice:"Confier", labelGossip:"Potins", placeholder:"Écrivez...", legalTitle:"Avis Légal", legalText:"<ul><li><strong>1. Âge:</strong> 18+ requis.</li><li><strong>2. Clause:</strong> Simulation IA.</li><li><strong>3. Éthique:</strong> Langage respectueux.</li><li><strong>4. Confidentialité:</strong> Données locales.</li><li><strong>5. Usage:</strong> Fonctionnalité uniquement.</li></ul>", legalBtn:"J'accepte", clearMsg:"Effacer?", intro:"Bonjour, je vous écoute.", profileTitle:"Faisons Connaissance", profileSubtitle:"Espace sûr.", startBtn:"Commencer", skipBtn:"Passer", gender:["Genre (Optionnel)","Femme","Homme","N/A"], age:["Âge (Optionnel)","N/A","18+"], job:["Emploi (Optionnel)","N/A","Étudiant","Travail"], relation:["Statut (Optionnel)","N/A","Célibataire"], mood:["Humeur? (Optionnel)","Neutre","Bien","Mal"] },
+      es: { appTitle:"Confidente", appSubtitle:"Hablar ayuda", labelAdvice:"Desahogo", labelGossip:"Chisme", placeholder:"Escribe...", legalTitle:"Aviso Legal", legalText:"<ul><li><strong>1. Edad:</strong> 18+ requerido.</li><li><strong>2. Aviso:</strong> Simulación IA.</li><li><strong>3. Ética:</strong> Lenguaje respetuoso.</li><li><strong>4. Privacidad:</strong> Datos locales.</li><li><strong>5. Uso:</strong> Solo funcionalidad.</li></ul>", legalBtn:"Aceptar", clearMsg:"¿Borrar?", intro:"Hola, te escucho.", profileTitle:"Perfil", profileSubtitle:"Seguro.", startBtn:"Iniciar", skipBtn:"Saltar", gender:["Género (Opcional)","Mujer","Hombre","N/A"], age:["Edad (Opcional)","N/A","18+"], job:["Ocupación (Opcional)","N/A","Estudiante"], relation:["Estado (Opcional)","N/A","Soltero"], mood:["Ánimo (Opcional)","Neutral","Bien","Mal"] },
+      ru: { appTitle:"Душевный Друг", appSubtitle:"Разговор поможет", labelAdvice:"Душа", labelGossip:"Сплетни", placeholder:"Напишите...", legalTitle:"Уведомление", legalText:"<ul><li><strong>1. Возраст:</strong> 18+ обязательно.</li><li><strong>2. Отказ:</strong> ИИ-симуляция.</li><li><strong>3. Этика:</strong> Уважение.</li><li><strong>4. Приватность:</strong> Локально.</li><li><strong>5. Использование:</strong> Только функции.</li></ul>", legalBtn:"Принять", clearMsg:"Очистить?", intro:"Привет, я слушаю.", profileTitle:"Профиль", profileSubtitle:"Безопасно.", startBtn:"Начать", skipBtn:"Пропустить", gender:["Пол (Опц.)","Жен","Муж","Нет"], age:["Возраст (Опц.)","Нет","18+"], job:["Работа (Опц.)","Нет","Студент"], relation:["Статус (Опц.)","Нет","Свободен"], mood:["Настроение (Опц.)","Норм","Хорошо","Плохо"] },
+      ja: { appTitle:"心の友", appSubtitle:"話そう", labelAdvice:"相談", labelGossip:"噂話", placeholder:"入力...", legalTitle:"免責事項", legalText:"<ul><li><strong>1. 年齢:</strong> 18歳以上.</li><li><strong>2. 免責:</strong> AIシミュレーション.</li><li><strong>3. 倫理:</strong> 丁寧な言葉.</li><li><strong>4. プライバシー:</strong> ローカル保存.</li><li><strong>5. 用途:</strong> 機能のみ.</li></ul>", legalBtn:"同意", clearMsg:"削除？", intro:"こんにちは。", profileTitle:"プロフィール", profileSubtitle:"安心。", startBtn:"開始", skipBtn:"スキップ", gender:["性別 (任意)","女性","男性","回答なし"], age:["年齢 (任意)","回答なし","18+"], job:["職業 (任意)","回答なし","学生"], relation:["状態 (任意)","回答なし","独身"], mood:["気分 (任意)","普通","良い","悪い"] },
+      pt: { appTitle:"Confidente", appSubtitle:"Falar faz bem", labelAdvice:"Desabafo", labelGossip:"Fofoca", placeholder:"Digite...", legalTitle:"Aviso Legal", legalText:"<ul><li><strong>1. Idade:</strong> 18+ necessário.</li><li><strong>2. Aviso:</strong> Simulação IA.</li><li><strong>3. Ética:</strong> Respeito.</li><li><strong>4. Privacidade:</strong> Local.</li><li><strong>5. Uso:</strong> Funcionalidade apenas.</li></ul>", legalBtn:"Aceitar", clearMsg:"Limpar?", intro:"Olá, estou ouvindo.", profileTitle:"Perfil", profileSubtitle:"Seguro.", startBtn:"Iniciar", skipBtn:"Pular", gender:["Gênero (Opcional)","Feminino","Masculino","N/A"], age:["Idade (Opcional)","N/A","18+"], job:["Trabalho (Opcional)","N/A","Estudante"], relation:["Status (Opcional)","N/A","Solteiro"], mood:["Humor (Opcional)","Neutro","Bem","Mal"] },
+      ar: { appTitle:"رفيق الروح", appSubtitle:"فضفض", labelAdvice:"نصيحة", labelGossip:"دردشة", placeholder:"اكتب...", legalTitle:"تنبيه قانوني", legalText:"<ul><li><strong>1. العمر:</strong> 18+ مطلوب.</li><li><strong>2. تنبيه:</strong> محاكاة ذكاء اصطناعي.</li><li><strong>3. أخلاق:</strong> لغة محترمة.</li><li><strong>4. الخصوصية:</strong> حفظ محلي.</li><li><strong>5. الاستخدام:</strong> للوظائف فقط.</li></ul>", legalBtn:"موافق", clearMsg:"مسح؟", intro:"مرحباً، أنا أسمعك.", profileTitle:"الملف", profileSubtitle:"آمن.", startBtn:"ابدأ", skipBtn:"تخطي", gender:["الجنس (اختياري)","أنثى","ذكر","لا"], age:["العمر (اختياري)","لا","18+"], job:["العمل (اختياري)","لا","طالب"], relation:["الحالة (اختياري)","لا","أعزب"], mood:["المزاج (اختياري)","عادي","جيد","سيء"] },
+      zh: { appTitle:"知己", appSubtitle:"倾诉", labelAdvice:"倾诉", labelGossip:"八卦", placeholder:"输入...", legalTitle:"法律声明", legalText:"<ul><li><strong>1. 年龄:</strong> 18岁以上.</li><li><strong>2. 声明:</strong> AI模拟.</li><li><strong>3. 伦理:</strong> 尊重语言.</li><li><strong>4. 隐私:</strong> 本地存储.</li><li><strong>5. 用途:</strong> 仅限功能.</li></ul>", legalBtn:"接受", clearMsg:"清除？", intro:"你好，我在听。", profileTitle:"简介", profileSubtitle:"安全。", startBtn:"开始", skipBtn:"跳过", gender:["性别 (可选)","女","男","不填"], age:["年龄 (可选)","不填","18+"], job:["职业 (可选)","不填","学生"], relation:["状态 (可选)","不填","单身"], mood:["心情 (可选)","一般","好","坏"] }
     };
 
-    // --- AI CONTROLLER ---
     const AIController = {
       history: [], userProfile: {}, genderMode: 'female',
       loadData() { try { const h=localStorage.getItem('ds_history_v8'); if(h)this.history=JSON.parse(h); const p=localStorage.getItem('ds_profile_v8'); if(p)this.userProfile=JSON.parse(p); return !!p; } catch(e){return false;} },
@@ -243,13 +188,12 @@
         let addressStyle = "Speak casually like a close friend.";
         if (lang === 'tr') addressStyle = "Kullanıcıya kesinlikle 'SEN' diye hitap et. Çok samimi, yakın bir arkadaş gibi konuş. Asla 'Siz' deme.";
         
-        // Human Touch Prompt
         const baseIdentity = `
         IDENTITY: You are Soul Confidant, an empathetic friend. NOT an AI assistant.
         STRICT RULES:
         1. LANGUAGE: Reply ONLY in ${targetLang}.
         2. TONE: ${addressStyle}. Short sentences. WhatsApp chat style.
-        3. LENGTH: Keep it short (max 2-3 sentences). Don't give long advice.
+        3. LENGTH: Keep it short (max 1-2 sentences). Don't give long advice.
         4. ENGAGEMENT: Ask simple questions back. "Really?", "Then what happened?"
         5. MOOD: User feels "${profile.mood||'Neutral'}". Be supportive or fun accordingly.
         `;
@@ -257,7 +201,6 @@
       },
     };
 
-    // --- APP LOGIC ---
     const app = {
       lang: 'en', currentMode: 'advice', _busy: false,
       init() {
@@ -325,7 +268,7 @@
         const full = `${sys}\n\nUser: ${txt}`;
 
         try {
-            // DIRECT API (NO CLOUDFLARE = NO CONNECTION ERROR)
+            // DIRECT API (Stable & No Cloudflare)
             const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, { 
                 method: 'POST', 
                 headers: {'Content-Type':'application/json'}, 
@@ -337,7 +280,7 @@
             this.addBubble(reply, 'ai');
         } catch(e) {
             this.removeMessage(loadingId);
-            this.addBubble("Connection Error.", 'ai');
+            this.addBubble("Connection Error. Please check your internet.", 'ai');
         }
         this._busy = false;
       },
